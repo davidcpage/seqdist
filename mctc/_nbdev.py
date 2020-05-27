@@ -2,9 +2,14 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {}
+index = {"to_np": "00_utils.ipynb",
+         "zero_grad": "00_utils.ipynb",
+         "timed": "00_utils.ipynb",
+         "benchmark_fwd_bwd": "00_utils.ipynb",
+         "report": "00_utils.ipynb",
+         "load_cupy_module": "00_utils.ipynb"}
 
-modules = []
+modules = ["utils.py"]
 
 doc_url = "https://davidcpage.github.io/mctc/"
 
