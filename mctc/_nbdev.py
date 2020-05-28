@@ -4,6 +4,8 @@ __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
 index = {"to_np": "00_utils.ipynb",
          "zero_grad": "00_utils.ipynb",
+         "float64": "00_utils.ipynb",
+         "compare_fwd_bwd": "00_utils.ipynb",
          "timed": "00_utils.ipynb",
          "benchmark_fwd_bwd": "00_utils.ipynb",
          "report": "00_utils.ipynb",
