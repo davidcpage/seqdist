@@ -1,6 +1,6 @@
 ---
 
-title: CTC loss with pytorch and cupy
+title: CTC loss
 
 keywords: fastai
 sidebar: home_sidebar
@@ -36,7 +36,7 @@ sidebar: home_sidebar
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The aim of this notebook is to explore a simple and somewhat efficient implementation of the standard <a href="http://www.cs.toronto.edu/~graves/icml_2006.pdf">CTC loss function</a> from scratch using pytorch and cupy.</p>
+<p>A simple and somewhat efficient implementation of the standard <a href="http://www.cs.toronto.edu/~graves/icml_2006.pdf">CTC loss function</a> from scratch using pytorch and cupy.</p>
 
 </div>
 </div>
@@ -48,37 +48,12 @@ sidebar: home_sidebar
 </div>
     {% endraw %}
 
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="load_cupy_func" class="doc_header"><code>load_cupy_func</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L19" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>load_cupy_func</code>(<strong><code>fname</code></strong>, <strong><code>name</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
-</blockquote>
-
-</div>
-
-</div>
-
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Preliminaries">Preliminaries<a class="anchor-link" href="#Preliminaries"> </a></h2>
 </div>
 </div>
-
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Generate a test example:</p>
@@ -104,7 +79,7 @@ sidebar: home_sidebar
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="generate_example_inputs" class="doc_header"><code>generate_example_inputs</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L27" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>generate_example_inputs</code>(<strong><code>T_min</code></strong>, <strong><code>T_max</code></strong>, <strong><code>N</code></strong>, <strong><code>C</code></strong>, <strong><code>L_min</code></strong>, <strong><code>L_max</code></strong>, <strong><code>device</code></strong>=<em><code>device(type='cuda')</code></em>)</p>
+<h4 id="generate_example_inputs" class="doc_header"><code>generate_example_inputs</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L19" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>generate_example_inputs</code>(<strong><code>T_min</code></strong>, <strong><code>T_max</code></strong>, <strong><code>N</code></strong>, <strong><code>C</code></strong>, <strong><code>L_min</code></strong>, <strong><code>L_max</code></strong>, <strong><code>device</code></strong>=<em><code>device(type='cuda')</code></em>)</p>
 </blockquote>
 <p>Args:
     T_min, T_max: bounds on number of time steps
@@ -200,7 +175,7 @@ cudnn:  6.0089
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ctc_loss_pytorch" class="doc_header"><code>ctc_loss_pytorch</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L42" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_loss_pytorch</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>blank</code></strong>=<em><code>0</code></em>, <strong><code>reduction</code></strong>=<em><code>'mean'</code></em>, <strong><code>zero_infinity</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="ctc_loss_pytorch" class="doc_header"><code>ctc_loss_pytorch</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L34" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_loss_pytorch</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>blank</code></strong>=<em><code>0</code></em>, <strong><code>reduction</code></strong>=<em><code>'mean'</code></em>, <strong><code>zero_infinity</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 
 </div>
@@ -311,7 +286,7 @@ tot: 14.50ms (13.15-15.57ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="interleave_blanks" class="doc_header"><code>interleave_blanks</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L51" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>interleave_blanks</code>(<strong><code>targets</code></strong>, <strong><code>blank_idx</code></strong>:<code>int</code>)</p>
+<h4 id="interleave_blanks" class="doc_header"><code>interleave_blanks</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L43" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>interleave_blanks</code>(<strong><code>targets</code></strong>, <strong><code>blank_idx</code></strong>:<code>int</code>)</p>
 </blockquote>
 
 </div>
@@ -335,7 +310,7 @@ tot: 14.50ms (13.15-15.57ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="prepare_inputs" class="doc_header"><code>prepare_inputs</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L57" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>prepare_inputs</code>(<strong><code>scores</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
+<h4 id="prepare_inputs" class="doc_header"><code>prepare_inputs</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L49" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>prepare_inputs</code>(<strong><code>scores</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -359,7 +334,7 @@ tot: 14.50ms (13.15-15.57ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ctc_logz_fwd" class="doc_header"><code>ctc_logz_fwd</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L64" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_logz_fwd</code>(<strong><code>state_scores</code></strong>, <strong><code>repeat_mask</code></strong>, <strong><code>final_states</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>S</code></strong>:<a href="/mctc/CTC_loss#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f8c58f34300&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f8c58f34300&gt;)</code></em>)</p>
+<h4 id="ctc_logz_fwd" class="doc_header"><code>ctc_logz_fwd</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L56" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_logz_fwd</code>(<strong><code>state_scores</code></strong>, <strong><code>repeat_mask</code></strong>, <strong><code>final_states</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>S</code></strong>:<a href="/mctc/CTC_loss#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f025fb74300&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f025fb74300&gt;)</code></em>)</p>
 </blockquote>
 
 </div>
@@ -383,7 +358,7 @@ tot: 14.50ms (13.15-15.57ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ctc_loss_basic" class="doc_header"><code>ctc_loss_basic</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L75" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_loss_basic</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
+<h4 id="ctc_loss_basic" class="doc_header"><code>ctc_loss_basic</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L67" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_loss_basic</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -524,60 +499,128 @@ tot: 1269.41ms (1253.75-1297.93ms)
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
 
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">ctc_fwd_bwd</span><span class="p">(</span><span class="n">state_scores</span><span class="p">,</span> <span class="n">repeat_mask</span><span class="p">,</span> <span class="n">final_states</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">fwd_bwd_impl</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span><span class="n">semiring</span><span class="o">=</span><span class="n">Log</span><span class="p">):</span>
-    <span class="n">T</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">Lp</span> <span class="o">=</span> <span class="n">state_scores</span><span class="o">.</span><span class="n">shape</span>
-    <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="p">[</span><span class="n">state_scores</span><span class="o">.</span><span class="n">new_full</span><span class="p">((</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">Lp</span><span class="p">),</span> <span class="n">S</span><span class="o">.</span><span class="n">zero</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
-    <span class="n">alpha</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">one</span>  
-    <span class="n">beta</span><span class="p">[</span><span class="n">input_lengths</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span> <span class="o">=</span> <span class="n">state_scores</span><span class="o">.</span><span class="n">new_full</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">Lp</span><span class="p">),</span> <span class="n">S</span><span class="o">.</span><span class="n">zero</span><span class="p">)</span><span class="o">.</span><span class="n">scatter_</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">final_states</span><span class="p">,</span> <span class="n">S</span><span class="o">.</span><span class="n">one</span><span class="p">)</span>
-    <span class="n">alpha_T</span> <span class="o">=</span> <span class="n">fwd_bwd_impl</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">state_scores</span><span class="p">,</span> <span class="n">repeat_mask</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
-    <span class="n">logz</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">alpha_T</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">final_states</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">logz</span> 
+</div>
+    {% endraw %}
 
-<span class="k">def</span> <span class="nf">_ctc_fwd_bwd_py</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">state_scores</span><span class="p">,</span> <span class="n">repeat_mask</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span><span class="n">semiring</span><span class="o">=</span><span class="n">Log</span><span class="p">):</span>
-    <span class="n">T</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">Lp</span> <span class="o">=</span> <span class="n">state_scores</span><span class="o">.</span><span class="n">shape</span>
-    <span class="n">zeros</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">.</span><span class="n">new_full</span><span class="p">((</span><span class="mi">1</span><span class="p">,),</span> <span class="n">S</span><span class="o">.</span><span class="n">zero</span><span class="p">)</span>
-    <span class="c1">#fwd</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">alpha</span><span class="o">.</span><span class="n">new_full</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">S</span><span class="o">.</span><span class="n">zero</span><span class="p">),</span> <span class="n">alpha</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
-        <span class="n">a</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:]</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">state_scores</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">S</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">a</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:],</span> <span class="n">a</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">repeat_mask</span><span class="p">,</span> <span class="n">zeros</span><span class="p">,</span> <span class="n">a</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">])]),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> 
-        <span class="n">alpha</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:]</span>
-    <span class="c1">#bwd</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">.</span><span class="n">new_full</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">Lp</span><span class="o">+</span><span class="mi">2</span><span class="p">),</span> <span class="n">S</span><span class="o">.</span><span class="n">zero</span><span class="p">)</span>
-    <span class="n">repeat_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">repeat_mask</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:],</span> <span class="n">repeat_mask</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]],</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">b</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">beta</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">state_scores</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">b</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">b</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">b</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">repeat_mask</span><span class="p">,</span> <span class="n">zeros</span><span class="p">,</span> <span class="n">b</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:])]),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">beta</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="n">input_lengths</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">t</span> <span class="o">&lt;=</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
-    <span class="k">return</span> <span class="n">alpha</span><span class="p">[</span><span class="n">input_lengths</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+<div class="output_wrapper">
+<div class="output">
 
-<span class="k">def</span> <span class="nf">masked_grad</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">):</span>
-    <span class="n">input_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">grad</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">grad</span><span class="o">.</span><span class="n">device</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">input_lengths</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">input_mask</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">grad</span><span class="o">.</span><span class="n">new_zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,)))</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>    
+<div class="output_area">
 
-<span class="k">class</span> <span class="nc">CTCLogz</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">Function</span><span class="p">):</span>
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">state_scores</span><span class="p">,</span> <span class="n">repeat_mask</span><span class="p">,</span> <span class="n">final_states</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">fwd_bwd_impl</span><span class="p">):</span>
-        <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">logz</span> <span class="o">=</span> <span class="n">ctc_fwd_bwd</span><span class="p">(</span><span class="n">state_scores</span><span class="p">,</span> <span class="n">repeat_mask</span><span class="p">,</span> <span class="n">final_states</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">fwd_bwd_impl</span><span class="p">,</span> <span class="n">Log</span><span class="p">)</span>
-        <span class="n">ctx</span><span class="o">.</span><span class="n">save_for_backward</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">logz</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">grad</span><span class="p">):</span>
-        <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">input_lengths</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">saved_tensors</span>
-        <span class="n">g</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">alpha</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">beta</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">masked_grad</span><span class="p">(</span><span class="n">grad</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">alpha</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">input_lengths</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">g</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="ctc_fwd_bwd" class="doc_header"><code>ctc_fwd_bwd</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L73" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_fwd_bwd</code>(<strong><code>state_scores</code></strong>, <strong><code>repeat_mask</code></strong>, <strong><code>final_states</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>fwd_bwd_impl</code></strong>, <strong><code>S</code></strong>:<a href="/mctc/CTC_loss#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f025fb74300&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f025fb74300&gt;)</code></em>)</p>
+</blockquote>
 
-<span class="k">def</span> <span class="nf">ctc_loss_logspace</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">target_lengths</span><span class="p">):</span>
-    <span class="n">logz</span> <span class="o">=</span> <span class="n">CTCLogz</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="o">*</span><span class="n">prepare_inputs</span><span class="p">(</span><span class="n">logits</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">targets</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">target_lengths</span><span class="p">),</span> <span class="n">_ctc_fwd_bwd_py</span><span class="p">)</span>
-    <span class="k">return</span> <span class="o">-</span> <span class="p">(</span><span class="n">logz</span> <span class="o">/</span> <span class="n">target_lengths</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-</pre></div>
+</div>
 
-    </div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="masked_grad" class="doc_header"><code>masked_grad</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L100" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>masked_grad</code>(<strong><code>grad</code></strong>, <strong><code>input_lengths</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="CTCLogz" class="doc_header"><code>class</code> <code>CTCLogz</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L104" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CTCLogz</code>() :: <code>Function</code></p>
+</blockquote>
+<p>Records operation history and defines formulas for differentiating ops.</p>
+<p>Every operation performed on :class:<code>Tensor</code> s creates a new function
+object, that performs the computation, and records that it happened.
+The history is retained in the form of a DAG of functions, with edges
+denoting data dependencies (<code>input &lt;- output</code>). Then, when backward is
+called, the graph is processed in the topological ordering, by calling
+:func:<code>backward</code> methods of each :class:<code>Function</code> object, and passing
+returned gradients on to next :class:<code>Function</code> s.</p>
+<p>Normally, the only way users interact with functions is by creating
+subclasses and defining new operations. This is a recommended way of
+extending torch.autograd.</p>
+<p>Examples::</p>
+
+<pre><code>&gt;&gt;&gt; class Exp(Function):
+&gt;&gt;&gt;
+&gt;&gt;&gt;     @staticmethod
+&gt;&gt;&gt;     def forward(ctx, i):
+&gt;&gt;&gt;         result = i.exp()
+&gt;&gt;&gt;         ctx.save_for_backward(result)
+&gt;&gt;&gt;         return result
+&gt;&gt;&gt;
+&gt;&gt;&gt;     @staticmethod
+&gt;&gt;&gt;     def backward(ctx, grad_output):
+&gt;&gt;&gt;         result, = ctx.saved_tensors
+&gt;&gt;&gt;         return grad_output * result
+&gt;&gt;&gt;
+&gt;&gt;&gt; #Use it by calling the apply method:
+&gt;&gt;&gt; output = Exp.apply(input)</code></pre>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="ctc_loss_py" class="doc_header"><code>ctc_loss_py</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L117" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_loss_py</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -591,7 +634,7 @@ tot: 1269.41ms (1253.75-1297.93ms)
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fwds</span><span class="p">,</span> <span class="n">bwds</span> <span class="o">=</span> <span class="n">compare_fwd_bwd</span><span class="p">(</span><span class="n">float64</span><span class="p">(</span><span class="n">ctc_loss_pytorch</span><span class="p">),</span> <span class="n">float64</span><span class="p">(</span><span class="n">ctc_loss_logspace</span><span class="p">),</span> <span class="n">logits</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">target_lengths</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fwds</span><span class="p">,</span> <span class="n">bwds</span> <span class="o">=</span> <span class="n">compare_fwd_bwd</span><span class="p">(</span><span class="n">float64</span><span class="p">(</span><span class="n">ctc_loss_pytorch</span><span class="p">),</span> <span class="n">float64</span><span class="p">(</span><span class="n">ctc_loss_py</span><span class="p">,</span> <span class="n">logits</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">target_lengths</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -623,7 +666,7 @@ bwd diff: 4.55e-13
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fwds</span><span class="p">,</span> <span class="n">bwds</span> <span class="o">=</span> <span class="n">compare_fwd_bwd</span><span class="p">(</span><span class="n">ctc_loss_pytorch</span><span class="p">,</span> <span class="n">ctc_loss_logspace</span><span class="p">,</span> <span class="n">logits</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">target_lengths</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fwds</span><span class="p">,</span> <span class="n">bwds</span> <span class="o">=</span> <span class="n">compare_fwd_bwd</span><span class="p">(</span><span class="n">ctc_loss_pytorch</span><span class="p">,</span> <span class="n">ctc_loss_py</span><span class="p">,</span> <span class="n">logits</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">target_lengths</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -655,7 +698,7 @@ bwd diff: 1.00e-07
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">report</span><span class="p">(</span><span class="n">benchmark_fwd_bwd</span><span class="p">(</span><span class="n">ctc_loss_logspace</span><span class="p">,</span> <span class="n">logits</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">target_lengths</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">report</span><span class="p">(</span><span class="n">benchmark_fwd_bwd</span><span class="p">(</span><span class="n">ctc_loss_py</span><span class="p">,</span> <span class="n">logits</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">target_lengths</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -787,7 +830,7 @@ extern &quot;C&quot; __global__ void ctc_fwd_bwd_logspace(
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ctc_loss_logspace_cupy" class="doc_header"><code>ctc_loss_logspace_cupy</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L95" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_loss_logspace_cupy</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
+<h4 id="ctc_loss_cupy" class="doc_header"><code>ctc_loss_cupy</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L136" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_loss_cupy</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -807,7 +850,7 @@ extern &quot;C&quot; __global__ void ctc_fwd_bwd_logspace(
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fwds</span><span class="p">,</span> <span class="n">bwds</span> <span class="o">=</span> <span class="n">compare_fwd_bwd</span><span class="p">(</span><span class="n">float64</span><span class="p">(</span><span class="n">ctc_loss_pytorch</span><span class="p">),</span> <span class="n">float64</span><span class="p">(</span><span class="n">ctc_loss_logspace_cupy</span><span class="p">),</span> <span class="n">logits</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">target_lengths</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fwds</span><span class="p">,</span> <span class="n">bwds</span> <span class="o">=</span> <span class="n">compare_fwd_bwd</span><span class="p">(</span><span class="n">float64</span><span class="p">(</span><span class="n">ctc_loss_pytorch</span><span class="p">),</span> <span class="n">float64</span><span class="p">(</span><span class="n">ctc_loss_cupy</span><span class="p">),</span> <span class="n">logits</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">target_lengths</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -839,7 +882,7 @@ bwd diff: 4.55e-13
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fwds</span><span class="p">,</span> <span class="n">bwds</span> <span class="o">=</span> <span class="n">compare_fwd_bwd</span><span class="p">(</span><span class="n">ctc_loss_pytorch</span><span class="p">,</span> <span class="n">ctc_loss_logspace_cupy</span><span class="p">,</span> <span class="n">logits</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">target_lengths</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fwds</span><span class="p">,</span> <span class="n">bwds</span> <span class="o">=</span> <span class="n">compare_fwd_bwd</span><span class="p">(</span><span class="n">ctc_loss_pytorch</span><span class="p">,</span> <span class="n">ctc_loss_cupy</span><span class="p">,</span> <span class="n">logits</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">target_lengths</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -871,7 +914,7 @@ bwd diff: 1.00e-07
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">report</span><span class="p">(</span><span class="n">benchmark_fwd_bwd</span><span class="p">(</span><span class="n">ctc_loss_logspace_cupy</span><span class="p">,</span> <span class="n">logits</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">target_lengths</span><span class="p">,</span> <span class="n">nloops</span><span class="o">=</span><span class="mi">100</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">report</span><span class="p">(</span><span class="n">benchmark_fwd_bwd</span><span class="p">(</span><span class="n">ctc_loss_cupy</span><span class="p">,</span> <span class="n">logits</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">target_lengths</span><span class="p">,</span> <span class="n">nloops</span><span class="o">=</span><span class="mi">100</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -921,7 +964,7 @@ tot: 11.69ms (10.78-14.93ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="max_grad" class="doc_header"><code>max_grad</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L100" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>max_grad</code>(<strong><code>x</code></strong>, <strong><code>dim</code></strong>=<em><code>0</code></em>)</p>
+<h4 id="max_grad" class="doc_header"><code>max_grad</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L141" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>max_grad</code>(<strong><code>x</code></strong>, <strong><code>dim</code></strong>=<em><code>0</code></em>)</p>
 </blockquote>
 
 </div>
@@ -945,7 +988,7 @@ tot: 11.69ms (10.78-14.93ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="CTCLogzViterbi" class="doc_header"><code>class</code> <code>CTCLogzViterbi</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L107" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CTCLogzViterbi</code>() :: <code>Function</code></p>
+<h2 id="CTCLogzViterbi" class="doc_header"><code>class</code> <code>CTCLogzViterbi</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L148" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CTCLogzViterbi</code>() :: <code>Function</code></p>
 </blockquote>
 <p>Records operation history and defines formulas for differentiating ops.</p>
 <p>Every operation performed on :class:<code>Tensor</code> s creates a new function
@@ -1004,7 +1047,7 @@ extending torch.autograd.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="viterbi_alignments" class="doc_header"><code>viterbi_alignments</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L121" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>viterbi_alignments</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
+<h4 id="viterbi_alignments" class="doc_header"><code>viterbi_alignments</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L162" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>viterbi_alignments</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -1028,7 +1071,7 @@ extending torch.autograd.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="soft_alignments" class="doc_header"><code>soft_alignments</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L126" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>soft_alignments</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>beta</code></strong>=<em><code>1.0</code></em>)</p>
+<h4 id="soft_alignments" class="doc_header"><code>soft_alignments</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L167" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>soft_alignments</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>beta</code></strong>=<em><code>1.0</code></em>)</p>
 </blockquote>
 
 </div>
@@ -1050,14 +1093,12 @@ extending torch.autograd.</p>
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">betas</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">10.</span><span class="p">]</span>
-<span class="n">axs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">))[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">beta</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">betas</span><span class="p">,</span> <span class="n">axs</span><span class="p">):</span>
-    <span class="n">alignments</span> <span class="o">=</span> <span class="n">to_np</span><span class="p">(</span><span class="n">soft_alignments</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">target_lengths</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">beta</span><span class="p">))</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">alignments</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.05</span><span class="p">);</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;beta=</span><span class="si">{beta:.1f}</span><span class="s1">&#39;</span><span class="p">)</span>  
-<span class="n">alignments</span> <span class="o">=</span> <span class="n">to_np</span><span class="p">(</span><span class="n">viterbi_alignments</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">target_lengths</span><span class="p">))</span>
-<span class="n">axs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">alignments</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.05</span><span class="p">);</span>
-<span class="n">axs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;viterbi&#39;</span><span class="p">);</span>
+<span class="n">alignments</span> <span class="o">=</span> <span class="p">{</span><span class="n">f</span><span class="s1">&#39;beta=</span><span class="si">{beta:.1f}</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">to_np</span><span class="p">(</span><span class="n">soft_alignments</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">target_lengths</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">beta</span><span class="p">))</span> <span class="k">for</span> <span class="n">beta</span> <span class="ow">in</span> <span class="n">betas</span><span class="p">}</span>
+<span class="n">alignments</span><span class="p">[</span><span class="s1">&#39;viterbi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">to_np</span><span class="p">(</span><span class="n">viterbi_alignments</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">input_lengths</span><span class="p">,</span> <span class="n">target_lengths</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">axs</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">alignments</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.05</span><span class="p">);</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>  
 </pre></div>
 
     </div>
@@ -1116,7 +1157,7 @@ extending torch.autograd.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="CTCLogzDirect" class="doc_header"><code>class</code> <code>CTCLogzDirect</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L135" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CTCLogzDirect</code>() :: <code>Function</code></p>
+<h2 id="CTCLogzDirect" class="doc_header"><code>class</code> <code>CTCLogzDirect</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L176" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CTCLogzDirect</code>() :: <code>Function</code></p>
 </blockquote>
 <p>Records operation history and defines formulas for differentiating ops.</p>
 <p>Every operation performed on :class:<code>Tensor</code> s creates a new function
@@ -1168,7 +1209,7 @@ extending torch.autograd.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ctc_loss_direct_cupy" class="doc_header"><code>ctc_loss_direct_cupy</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L149" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_loss_direct_cupy</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
+<h4 id="ctc_loss_direct_cupy" class="doc_header"><code>ctc_loss_direct_cupy</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L190" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_loss_direct_cupy</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
 </blockquote>
 
 </div>

@@ -2,6 +2,6 @@
   "mctc": {
     "Overview": "/",
     "Utils": "/utils",
-    "CTC loss with pytorch and cupy": "/CTC_loss"
+    "CTC loss": "/CTC_loss"
   }
 }
