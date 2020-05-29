@@ -8,41 +8,43 @@
 
 ## How to use
 
-Compare against builtin pytorch loss:
+Comparison against builtin pytorch implementation of the standard CTC loss:
 
 ```
 sample_inputs = logits, targets, input_lengths, target_lengths = generate_sample_inputs(T_min=450, T_max=500, N=128, C=20, L_min=80, L_max=100)
-(ctc_loss_pytorch(*sample_inputs).item(), ctc_loss_cupy(*sample_inputs).item())
+print(f'pytorch loss: {ctc_loss_pytorch(*sample_inputs):.4f}')
+print(f'mctc loss:    {ctc_loss_cupy(*sample_inputs):.4f}')
 ```
 
+    pytorch loss: 12.7165
+    mctc loss:    12.7165
 
 
+### Speed comparison
 
-    (12.813830375671387, 12.813830375671387)
-
-
-
-Speed comparison:
+Pytorch:
 
 ```
 report(benchmark_fwd_bwd(ctc_loss_pytorch, *sample_inputs))
 ```
 
-    fwd: 4.98ms (4.22-5.52ms)
-    bwd: 10.26ms (9.08-11.11ms)
-    tot: 15.24ms (13.99-16.58ms)
+    fwd: 4.86ms (3.85-5.44ms)
+    bwd: 9.61ms (8.40-11.04ms)
+    tot: 14.47ms (12.25-15.72ms)
 
+
+MCTC:
 
 ```
 report(benchmark_fwd_bwd(ctc_loss_cupy, *sample_inputs))
 ```
 
-    fwd: 6.44ms (6.15-7.04ms)
-    bwd: 5.16ms (4.97-5.80ms)
-    tot: 11.59ms (11.19-12.77ms)
+    fwd: 6.66ms (6.45-7.09ms)
+    bwd: 5.22ms (4.94-5.50ms)
+    tot: 11.88ms (11.43-12.59ms)
 
 
-Soft and hard alignments:
+### Alignments
 
 ```
 betas = [0.1, 1.0, 10.]
@@ -55,5 +57,5 @@ for (ax, (title, data)) in zip(np.array(axs).flatten(), alignments.items()):
 ```
 
 
-![png](docs/images/output_9_0.png)
+![png](docs/images/output_11_0.png)
 
