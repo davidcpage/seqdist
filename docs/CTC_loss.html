@@ -44,6 +44,53 @@ sidebar: home_sidebar
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>nvidia-smi
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Fri May 29 09:22:22 2020       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 440.82       Driver Version: 418.67       CUDA Version: 10.1     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  Tesla K80           Off  | 00000000:00:04.0 Off |                    0 |
+| N/A   72C    P8    82W / 149W |      0MiB / 11441MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID   Type   Process name                             Usage      |
+|=============================================================================|
+|  No running processes found                                                 |
++-----------------------------------------------------------------------------+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
 </div>
     {% endraw %}
@@ -79,7 +126,7 @@ sidebar: home_sidebar
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="generate_example_inputs" class="doc_header"><code>generate_example_inputs</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L19" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>generate_example_inputs</code>(<strong><code>T_min</code></strong>, <strong><code>T_max</code></strong>, <strong><code>N</code></strong>, <strong><code>C</code></strong>, <strong><code>L_min</code></strong>, <strong><code>L_max</code></strong>, <strong><code>device</code></strong>=<em><code>device(type='cuda')</code></em>)</p>
+<h4 id="generate_example_inputs" class="doc_header"><code>generate_example_inputs</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L18" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>generate_example_inputs</code>(<strong><code>T_min</code></strong>, <strong><code>T_max</code></strong>, <strong><code>N</code></strong>, <strong><code>C</code></strong>, <strong><code>L_min</code></strong>, <strong><code>L_max</code></strong>, <strong><code>device</code></strong>=<em><code>device(type='cuda')</code></em>)</p>
 </blockquote>
 <p>Args:
     T_min, T_max: bounds on number of time steps
@@ -175,7 +222,7 @@ cudnn:  6.0089
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ctc_loss_pytorch" class="doc_header"><code>ctc_loss_pytorch</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L34" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_loss_pytorch</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>blank</code></strong>=<em><code>0</code></em>, <strong><code>reduction</code></strong>=<em><code>'mean'</code></em>, <strong><code>zero_infinity</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="ctc_loss_pytorch" class="doc_header"><code>ctc_loss_pytorch</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L33" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_loss_pytorch</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>blank</code></strong>=<em><code>0</code></em>, <strong><code>reduction</code></strong>=<em><code>'mean'</code></em>, <strong><code>zero_infinity</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 
 </div>
@@ -257,13 +304,19 @@ tot: 14.50ms (13.15-15.57ms)
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Basic-pytorch">Basic pytorch<a class="anchor-link" href="#Basic-pytorch"> </a></h2>
+<h2 id="Loss-implementations">Loss implementations<a class="anchor-link" href="#Loss-implementations"> </a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Here's a straightforward implementation in pytorch. As is standard, we're working in logspace for numerical stability. In the interests of clarity, we've encapsulated the logspace arithmetic into a class Log:</p>
+<h3 id="1.-Basic-pytorch">1. Basic pytorch<a class="anchor-link" href="#1.-Basic-pytorch"> </a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here's a straightforward implementation in pytorch. As is standard, we're working in logspace for numerical stability. In the interests of clarity, we've encapsulated the logspace arithmetic into an object: Log.</p>
 
 </div>
 </div>
@@ -286,7 +339,7 @@ tot: 14.50ms (13.15-15.57ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="interleave_blanks" class="doc_header"><code>interleave_blanks</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L43" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>interleave_blanks</code>(<strong><code>targets</code></strong>, <strong><code>blank_idx</code></strong>:<code>int</code>)</p>
+<h4 id="interleave_blanks" class="doc_header"><code>interleave_blanks</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L42" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>interleave_blanks</code>(<strong><code>targets</code></strong>, <strong><code>blank_idx</code></strong>:<code>int</code>)</p>
 </blockquote>
 
 </div>
@@ -310,7 +363,7 @@ tot: 14.50ms (13.15-15.57ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="prepare_inputs" class="doc_header"><code>prepare_inputs</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L49" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>prepare_inputs</code>(<strong><code>scores</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
+<h4 id="prepare_inputs" class="doc_header"><code>prepare_inputs</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L48" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>prepare_inputs</code>(<strong><code>scores</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -334,31 +387,7 @@ tot: 14.50ms (13.15-15.57ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ctc_logz_fwd" class="doc_header"><code>ctc_logz_fwd</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L56" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_logz_fwd</code>(<strong><code>state_scores</code></strong>, <strong><code>repeat_mask</code></strong>, <strong><code>final_states</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>S</code></strong>:<a href="/mctc/CTC_loss#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f9ab70f4300&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f9ab70f4300&gt;)</code></em>)</p>
-</blockquote>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="ctc_loss_basic" class="doc_header"><code>ctc_loss_basic</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L67" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_loss_basic</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
+<h4 id="ctc_loss_basic" class="doc_header"><code>ctc_loss_basic</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L66" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_loss_basic</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -484,7 +513,7 @@ tot: 1269.41ms (1253.75-1297.93ms)
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Pytorch-with-grad-implementation">Pytorch with grad implementation<a class="anchor-link" href="#Pytorch-with-grad-implementation"> </a></h2>
+<h3 id="2.-Pytorch-with-grad">2. Pytorch with grad<a class="anchor-link" href="#2.-Pytorch-with-grad"> </a></h3>
 </div>
 </div>
 </div>
@@ -514,7 +543,7 @@ tot: 1269.41ms (1253.75-1297.93ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ctc_fwd_bwd" class="doc_header"><code>ctc_fwd_bwd</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L73" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_fwd_bwd</code>(<strong><code>state_scores</code></strong>, <strong><code>repeat_mask</code></strong>, <strong><code>final_states</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>fwd_bwd_impl</code></strong>, <strong><code>S</code></strong>:<a href="/mctc/CTC_loss#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f9ab70f4300&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f9ab70f4300&gt;)</code></em>)</p>
+<h4 id="ctc_fwd_bwd" class="doc_header"><code>ctc_fwd_bwd</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L72" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_fwd_bwd</code>(<strong><code>state_scores</code></strong>, <strong><code>repeat_mask</code></strong>, <strong><code>final_states</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>fwd_bwd_impl</code></strong>, <strong><code>S</code></strong>:<a href="/mctc/CTC_loss#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7fa2c9bb4300&gt;, sum=&lt;built-in method logsumexp of type object at 0x7fa2c9bb4300&gt;)</code></em>)</p>
 </blockquote>
 
 </div>
@@ -538,7 +567,7 @@ tot: 1269.41ms (1253.75-1297.93ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="masked_grad" class="doc_header"><code>masked_grad</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L100" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>masked_grad</code>(<strong><code>grad</code></strong>, <strong><code>input_lengths</code></strong>)</p>
+<h4 id="masked_grad" class="doc_header"><code>masked_grad</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L99" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>masked_grad</code>(<strong><code>grad</code></strong>, <strong><code>input_lengths</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -562,7 +591,7 @@ tot: 1269.41ms (1253.75-1297.93ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ctc_loss_py" class="doc_header"><code>ctc_loss_py</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L117" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_loss_py</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
+<h4 id="ctc_loss_py" class="doc_header"><code>ctc_loss_py</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L116" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_loss_py</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -674,7 +703,7 @@ tot: 541.29ms (510.89-602.96ms)
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Cupy">Cupy<a class="anchor-link" href="#Cupy"> </a></h2>
+<h3 id="3.-Cupy">3. Cupy<a class="anchor-link" href="#3.-Cupy"> </a></h3>
 </div>
 </div>
 </div>
@@ -778,7 +807,7 @@ extern &quot;C&quot; __global__ void ctc_fwd_bwd_logspace(
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ctc_loss_cupy" class="doc_header"><code>ctc_loss_cupy</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L136" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_loss_cupy</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
+<h4 id="ctc_loss_cupy" class="doc_header"><code>ctc_loss_cupy</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L135" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_loss_cupy</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -912,7 +941,7 @@ tot: 11.69ms (10.78-14.93ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="max_grad" class="doc_header"><code>max_grad</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L141" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>max_grad</code>(<strong><code>x</code></strong>, <strong><code>dim</code></strong>=<em><code>0</code></em>)</p>
+<h4 id="max_grad" class="doc_header"><code>max_grad</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L140" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>max_grad</code>(<strong><code>x</code></strong>, <strong><code>dim</code></strong>=<em><code>0</code></em>)</p>
 </blockquote>
 
 </div>
@@ -943,7 +972,7 @@ tot: 11.69ms (10.78-14.93ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="viterbi_alignments" class="doc_header"><code>viterbi_alignments</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L162" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>viterbi_alignments</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
+<h4 id="viterbi_alignments" class="doc_header"><code>viterbi_alignments</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L161" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>viterbi_alignments</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -967,7 +996,7 @@ tot: 11.69ms (10.78-14.93ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="soft_alignments" class="doc_header"><code>soft_alignments</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L167" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>soft_alignments</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>beta</code></strong>=<em><code>1.0</code></em>)</p>
+<h4 id="soft_alignments" class="doc_header"><code>soft_alignments</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L166" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>soft_alignments</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>beta</code></strong>=<em><code>1.0</code></em>)</p>
 </blockquote>
 
 </div>
@@ -1053,7 +1082,7 @@ tot: 11.69ms (10.78-14.93ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ctc_loss_direct_cupy" class="doc_header"><code>ctc_loss_direct_cupy</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L190" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_loss_direct_cupy</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
+<h4 id="ctc_loss_direct_cupy" class="doc_header"><code>ctc_loss_direct_cupy</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L189" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_loss_direct_cupy</code>(<strong><code>logits</code></strong>, <strong><code>targets</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>target_lengths</code></strong>)</p>
 </blockquote>
 
 </div>
