@@ -257,7 +257,7 @@ tot: 14.50ms (13.15-15.57ms)
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Basic-pytorch">Basic pytorch<a class="anchor-link" href="#Basic-pytorch"> </a></h3>
+<h2 id="Basic-pytorch">Basic pytorch<a class="anchor-link" href="#Basic-pytorch"> </a></h2>
 </div>
 </div>
 </div>
@@ -334,7 +334,7 @@ tot: 14.50ms (13.15-15.57ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ctc_logz_fwd" class="doc_header"><code>ctc_logz_fwd</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L56" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_logz_fwd</code>(<strong><code>state_scores</code></strong>, <strong><code>repeat_mask</code></strong>, <strong><code>final_states</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>S</code></strong>:<a href="/mctc/CTC_loss#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f025fb74300&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f025fb74300&gt;)</code></em>)</p>
+<h4 id="ctc_logz_fwd" class="doc_header"><code>ctc_logz_fwd</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L56" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_logz_fwd</code>(<strong><code>state_scores</code></strong>, <strong><code>repeat_mask</code></strong>, <strong><code>final_states</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>S</code></strong>:<a href="/mctc/CTC_loss#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f9ab70f4300&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f9ab70f4300&gt;)</code></em>)</p>
 </blockquote>
 
 </div>
@@ -514,7 +514,7 @@ tot: 1269.41ms (1253.75-1297.93ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ctc_fwd_bwd" class="doc_header"><code>ctc_fwd_bwd</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L73" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_fwd_bwd</code>(<strong><code>state_scores</code></strong>, <strong><code>repeat_mask</code></strong>, <strong><code>final_states</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>fwd_bwd_impl</code></strong>, <strong><code>S</code></strong>:<a href="/mctc/CTC_loss#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f025fb74300&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f025fb74300&gt;)</code></em>)</p>
+<h4 id="ctc_fwd_bwd" class="doc_header"><code>ctc_fwd_bwd</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L73" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_fwd_bwd</code>(<strong><code>state_scores</code></strong>, <strong><code>repeat_mask</code></strong>, <strong><code>final_states</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>fwd_bwd_impl</code></strong>, <strong><code>S</code></strong>:<a href="/mctc/CTC_loss#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f9ab70f4300&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f9ab70f4300&gt;)</code></em>)</p>
 </blockquote>
 
 </div>
@@ -540,58 +540,6 @@ tot: 1269.41ms (1253.75-1297.93ms)
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="masked_grad" class="doc_header"><code>masked_grad</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L100" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>masked_grad</code>(<strong><code>grad</code></strong>, <strong><code>input_lengths</code></strong>)</p>
 </blockquote>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h2 id="CTCLogz" class="doc_header"><code>class</code> <code>CTCLogz</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L104" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CTCLogz</code>() :: <code>Function</code></p>
-</blockquote>
-<p>Records operation history and defines formulas for differentiating ops.</p>
-<p>Every operation performed on :class:<code>Tensor</code> s creates a new function
-object, that performs the computation, and records that it happened.
-The history is retained in the form of a DAG of functions, with edges
-denoting data dependencies (<code>input &lt;- output</code>). Then, when backward is
-called, the graph is processed in the topological ordering, by calling
-:func:<code>backward</code> methods of each :class:<code>Function</code> object, and passing
-returned gradients on to next :class:<code>Function</code> s.</p>
-<p>Normally, the only way users interact with functions is by creating
-subclasses and defining new operations. This is a recommended way of
-extending torch.autograd.</p>
-<p>Examples::</p>
-
-<pre><code>&gt;&gt;&gt; class Exp(Function):
-&gt;&gt;&gt;
-&gt;&gt;&gt;     @staticmethod
-&gt;&gt;&gt;     def forward(ctx, i):
-&gt;&gt;&gt;         result = i.exp()
-&gt;&gt;&gt;         ctx.save_for_backward(result)
-&gt;&gt;&gt;         return result
-&gt;&gt;&gt;
-&gt;&gt;&gt;     @staticmethod
-&gt;&gt;&gt;     def backward(ctx, grad_output):
-&gt;&gt;&gt;         result, = ctx.saved_tensors
-&gt;&gt;&gt;         return grad_output * result
-&gt;&gt;&gt;
-&gt;&gt;&gt; #Use it by calling the apply method:
-&gt;&gt;&gt; output = Exp.apply(input)</code></pre>
 
 </div>
 
@@ -981,58 +929,6 @@ tot: 11.69ms (10.78-14.93ms)
     
 <div class="cell border-box-sizing code_cell rendered">
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h2 id="CTCLogzViterbi" class="doc_header"><code>class</code> <code>CTCLogzViterbi</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L148" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CTCLogzViterbi</code>() :: <code>Function</code></p>
-</blockquote>
-<p>Records operation history and defines formulas for differentiating ops.</p>
-<p>Every operation performed on :class:<code>Tensor</code> s creates a new function
-object, that performs the computation, and records that it happened.
-The history is retained in the form of a DAG of functions, with edges
-denoting data dependencies (<code>input &lt;- output</code>). Then, when backward is
-called, the graph is processed in the topological ordering, by calling
-:func:<code>backward</code> methods of each :class:<code>Function</code> object, and passing
-returned gradients on to next :class:<code>Function</code> s.</p>
-<p>Normally, the only way users interact with functions is by creating
-subclasses and defining new operations. This is a recommended way of
-extending torch.autograd.</p>
-<p>Examples::</p>
-
-<pre><code>&gt;&gt;&gt; class Exp(Function):
-&gt;&gt;&gt;
-&gt;&gt;&gt;     @staticmethod
-&gt;&gt;&gt;     def forward(ctx, i):
-&gt;&gt;&gt;         result = i.exp()
-&gt;&gt;&gt;         ctx.save_for_backward(result)
-&gt;&gt;&gt;         return result
-&gt;&gt;&gt;
-&gt;&gt;&gt;     @staticmethod
-&gt;&gt;&gt;     def backward(ctx, grad_output):
-&gt;&gt;&gt;         result, = ctx.saved_tensors
-&gt;&gt;&gt;         return grad_output * result
-&gt;&gt;&gt;
-&gt;&gt;&gt; #Use it by calling the apply method:
-&gt;&gt;&gt; output = Exp.apply(input)</code></pre>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
 </div>
     {% endraw %}
 
@@ -1142,58 +1038,6 @@ extending torch.autograd.</p>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h2 id="CTCLogzDirect" class="doc_header"><code>class</code> <code>CTCLogzDirect</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L176" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CTCLogzDirect</code>() :: <code>Function</code></p>
-</blockquote>
-<p>Records operation history and defines formulas for differentiating ops.</p>
-<p>Every operation performed on :class:<code>Tensor</code> s creates a new function
-object, that performs the computation, and records that it happened.
-The history is retained in the form of a DAG of functions, with edges
-denoting data dependencies (<code>input &lt;- output</code>). Then, when backward is
-called, the graph is processed in the topological ordering, by calling
-:func:<code>backward</code> methods of each :class:<code>Function</code> object, and passing
-returned gradients on to next :class:<code>Function</code> s.</p>
-<p>Normally, the only way users interact with functions is by creating
-subclasses and defining new operations. This is a recommended way of
-extending torch.autograd.</p>
-<p>Examples::</p>
-
-<pre><code>&gt;&gt;&gt; class Exp(Function):
-&gt;&gt;&gt;
-&gt;&gt;&gt;     @staticmethod
-&gt;&gt;&gt;     def forward(ctx, i):
-&gt;&gt;&gt;         result = i.exp()
-&gt;&gt;&gt;         ctx.save_for_backward(result)
-&gt;&gt;&gt;         return result
-&gt;&gt;&gt;
-&gt;&gt;&gt;     @staticmethod
-&gt;&gt;&gt;     def backward(ctx, grad_output):
-&gt;&gt;&gt;         result, = ctx.saved_tensors
-&gt;&gt;&gt;         return grad_output * result
-&gt;&gt;&gt;
-&gt;&gt;&gt; #Use it by calling the apply method:
-&gt;&gt;&gt; output = Exp.apply(input)</code></pre>
-
-</div>
-
-</div>
-
-</div>
-</div>
 
 </div>
     {% endraw %}
