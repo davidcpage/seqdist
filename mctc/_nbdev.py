@@ -9,9 +9,31 @@ index = {"to_np": "00_utils.ipynb",
          "timed": "00_utils.ipynb",
          "benchmark_fwd_bwd": "00_utils.ipynb",
          "report": "00_utils.ipynb",
-         "load_cupy_module": "00_utils.ipynb"}
+         "load_cupy_module": "00_utils.ipynb",
+         "device": "01_CTC_loss.ipynb",
+         "load_cupy_func": "01_CTC_loss.ipynb",
+         "generate_example_inputs": "01_CTC_loss.ipynb",
+         "ctc_loss_pytorch": "01_CTC_loss.ipynb",
+         "interleave_blanks": "01_CTC_loss.ipynb",
+         "prepare_inputs": "01_CTC_loss.ipynb",
+         "ctc_logz_fwd": "01_CTC_loss.ipynb",
+         "ctc_loss_basic": "01_CTC_loss.ipynb",
+         "semiring": "01_CTC_loss.ipynb",
+         "neginf": "01_CTC_loss.ipynb",
+         "Log": "01_CTC_loss.ipynb",
+         "ctc_loss_logspace_cupy": "01_CTC_loss.ipynb",
+         "cupy_funcs": "01_CTC_loss.ipynb",
+         "max_grad": "01_CTC_loss.ipynb",
+         "CTCLogzViterbi": "01_CTC_loss.ipynb",
+         "Max": "01_CTC_loss.ipynb",
+         "viterbi_alignments": "01_CTC_loss.ipynb",
+         "soft_alignments": "01_CTC_loss.ipynb",
+         "CTCLogzDirect": "01_CTC_loss.ipynb",
+         "ctc_loss_direct_cupy": "01_CTC_loss.ipynb",
+         "Prob": "01_CTC_loss.ipynb"}
 
-modules = ["utils.py"]
+modules = ["utils.py",
+           "ctc.py"]
 
 doc_url = "https://davidcpage.github.io/mctc/"
 

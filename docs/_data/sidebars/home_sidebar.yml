@@ -12,6 +12,9 @@ entries:
     - output: web,pdf
       title: Utils
       url: /utils
+    - output: web,pdf
+      title: CTC loss with pytorch and cupy
+      url: /CTC_loss
     output: web
     title: mctc
   output: web
