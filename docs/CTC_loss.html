@@ -5,8 +5,8 @@ title: CTC loss
 keywords: fastai
 sidebar: home_sidebar
 
-
-
+summary: "A simple and somewhat efficient implementation of the standard <a href='http://www.cs.toronto.edu/~graves/icml_2006.pdf'>CTC loss function</a> using pytorch and cupy."
+description: "A simple and somewhat efficient implementation of the standard <a href='http://www.cs.toronto.edu/~graves/icml_2006.pdf'>CTC loss function</a> using pytorch and cupy."
 ---
 <!--
 
@@ -30,13 +30,6 @@ sidebar: home_sidebar
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a href="https://colab.research.google.com/github/davidcpage/mctc/blob/master/notebooks/01_CTC_loss.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>A simple and somewhat efficient implementation of the standard <a href="http://www.cs.toronto.edu/~graves/icml_2006.pdf">CTC loss function</a> from scratch using pytorch and cupy.</p>
 
 </div>
 </div>
@@ -543,7 +536,7 @@ tot: 1269.41ms (1253.75-1297.93ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ctc_fwd_bwd" class="doc_header"><code>ctc_fwd_bwd</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L72" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_fwd_bwd</code>(<strong><code>state_scores</code></strong>, <strong><code>repeat_mask</code></strong>, <strong><code>final_states</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>fwd_bwd_impl</code></strong>, <strong><code>S</code></strong>:<a href="/mctc/CTC_loss#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f0b17574300&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f0b17574300&gt;)</code></em>)</p>
+<h4 id="ctc_fwd_bwd" class="doc_header"><code>ctc_fwd_bwd</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc.py#L72" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ctc_fwd_bwd</code>(<strong><code>state_scores</code></strong>, <strong><code>repeat_mask</code></strong>, <strong><code>final_states</code></strong>, <strong><code>input_lengths</code></strong>, <strong><code>fwd_bwd_impl</code></strong>, <strong><code>S</code></strong>:<a href="/mctc/CTC_loss#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f3a1ff74300&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f3a1ff74300&gt;)</code></em>)</p>
 </blockquote>
 
 </div>
@@ -714,7 +707,7 @@ tot: 541.29ms (510.89-602.96ms)
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">writefile</span> mctc/cuda/ctc.cu
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">writefile</span> cuda/ctc.cu
 __device__ __forceinline__ FLOAT max3(FLOAT a, FLOAT a1, FLOAT a2) {
     FLOAT maxa = a &gt; a1 ? a : a1; 
     return maxa &gt; a2 ? maxa : a2;

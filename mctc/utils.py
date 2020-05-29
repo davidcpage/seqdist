@@ -7,6 +7,7 @@ __all__ = ['to_np', 'zero_grad', 'float64', 'compare_fwd_bwd', 'timed', 'benchma
 import torch
 import numpy as np
 import cupy as cp
+from pathlib import Path
 
 # Cell
 def to_np(x):
@@ -53,6 +54,8 @@ def report(times):
 
 # Cell
 def load_cupy_func(fname, name, **kwargs):
+    try: fname = (Path(__file__).parent / fname).resolve()
+    except: pass
     with open(fname) as f:
         code = f.read()
     macros = [f'#define {k} {v}' for k,v in kwargs.items()]
@@ -60,6 +63,8 @@ def load_cupy_func(fname, name, **kwargs):
     return cp.RawKernel(code, name)
 
 def load_cupy_module(fname, **kwargs):
+    try: fname = (Path(__file__).parent / fname).resolve()
+    except: pass
     with open(fname) as f:
         code = f.read()
     macros = [f'#define {k} {v}' for k,v in kwargs.items()]
