@@ -133,7 +133,7 @@ def _fwd_bwd_cupy(alpha, beta, state_scores, repeat_mask, input_lengths, S:semir
     return alpha_T
 
 def loss_cupy(logits, targets, input_lengths, target_lengths):
-    logz = _Logz.apply(*prepare_inputs(logits.log_softmax(2), targets, input_lengths, target_lengths), _ctc_fwd_bwd_cupy)
+    logz = _Logz.apply(*prepare_inputs(logits.log_softmax(2), targets, input_lengths, target_lengths), _fwd_bwd_cupy)
     return - (logz / target_lengths).mean()
 
 # Cell
@@ -187,5 +187,5 @@ class _LogzDirect(torch.autograd.Function):
         return g, None, None, None, None
 
 def loss_direct_cupy(logits, targets, input_lengths, target_lengths):
-    logz = _LogzDirect.apply(*prepare_inputs(logits.softmax(2), targets, input_lengths, target_lengths), _ctc_fwd_bwd_cupy)
+    logz = _LogzDirect.apply(*prepare_inputs(logits.softmax(2), targets, input_lengths, target_lengths), _fwd_bwd_cupy)
     return - (logz / target_lengths).mean()
