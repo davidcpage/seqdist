@@ -12,7 +12,7 @@ __device__ __forceinline__ FLOAT sum3(FLOAT a, FLOAT a1, FLOAT a2) {return a + a
 __device__ __forceinline__ FLOAT add(FLOAT a, FLOAT b) {return a + b;}
 __device__ __forceinline__ FLOAT mul(FLOAT a, FLOAT b) {return a * b;}
 
-extern "C" __global__ void ctc_fwd_bwd_logspace(
+extern "C" __global__ void fwd_bwd_logspace(
     FLOAT* __restrict__ alpha_T, 
     FLOAT* __restrict__ alpha, FLOAT* __restrict__ beta,  
     const FLOAT* __restrict__ scores,  const bool* __restrict__ repeat_mask, 
