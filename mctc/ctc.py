@@ -119,8 +119,8 @@ def loss_py(logits, targets, input_lengths, target_lengths):
 
 # Cell
 cupy_funcs = {
-    (torch.float32, Log): load_cupy_func('cuda/ctc.cu', 'fwd_bwd_logspace', FLOAT='float',  SUM='logsumexp3', MUL='add', ZERO=f'{neginf:E}'),
-    (torch.float64, Log): load_cupy_func('cuda/ctc.cu', 'fwd_bwd_logspace', FLOAT='double', SUM='logsumexp3', MUL='add', ZERO=f'{neginf:E}'),
+    (torch.float32, Log): load_cupy_func('cuda/ctc.cu', 'fwd_bwd_logspace', FLOAT='float',  SUM='logsumexp3', MUL='add', ZERO='{:E}'.format(Log.zero)),
+    (torch.float64, Log): load_cupy_func('cuda/ctc.cu', 'fwd_bwd_logspace', FLOAT='double', SUM='logsumexp3', MUL='add', ZERO='{:E}'.format(Log.zero)),
 }
 
 def _fwd_bwd_cupy(alpha, beta, state_scores, repeat_mask, input_lengths, S:semiring):
@@ -141,8 +141,8 @@ def max_grad(x, dim=0):
     return torch.zeros_like(x).scatter_(dim, x.argmax(dim, True), 1.0)
 
 Max = semiring(zero=neginf, one=0., mul=torch.add, sum=(lambda x, dim=0: torch.max(x, dim=dim)[0]))
-cupy_funcs[(torch.float32, Max)] = load_cupy_func('cuda/ctc.cu', 'fwd_bwd_logspace', FLOAT='float',  SUM='max3', MUL='add', ZERO=f'{neginf:E}')
-cupy_funcs[(torch.float64, Max)] = load_cupy_func('cuda/ctc.cu', 'fwd_bwd_logspace', FLOAT='double', SUM='max3', MUL='add', ZERO=f'{neginf:E}')
+cupy_funcs[(torch.float32, Max)] = load_cupy_func('cuda/ctc.cu', 'fwd_bwd_logspace', FLOAT='float',  SUM='max3', MUL='add', ZERO='{:E}'.format(Log.zero))
+cupy_funcs[(torch.float64, Max)] = load_cupy_func('cuda/ctc.cu', 'fwd_bwd_logspace', FLOAT='double', SUM='max3', MUL='add', ZERO='{:E}'.format(Log.zero))
 
 class _LogzViterbi(torch.autograd.Function):
     @staticmethod

@@ -117,8 +117,8 @@ def loss_py(logits, targets, input_lengths, target_lengths, base_alignments, wid
 
 # Cell
 cupy_funcs = {
-    (torch.float32, ctc.Log): load_cupy_func('cuda/ctc_banded.cu', 'fwd_bwd_banded', FLOAT='float',  SUM='logsumexp3', MUL='add', ZERO=f'{ctc.Log.zero:E}'),
-    (torch.float64, ctc.Log): load_cupy_func('cuda/ctc_banded.cu', 'fwd_bwd_banded', FLOAT='double', SUM='logsumexp3', MUL='add', ZERO=f'{ctc.Log.zero:E}'),
+    (torch.float32, ctc.Log): load_cupy_func('cuda/ctc_banded.cu', 'fwd_bwd_banded', FLOAT='float',  SUM='logsumexp3', MUL='add', ZERO='{:E}'.format(ctc.Log.zero)),
+    (torch.float64, ctc.Log): load_cupy_func('cuda/ctc_banded.cu', 'fwd_bwd_banded', FLOAT='double', SUM='logsumexp3', MUL='add', ZERO='{:E}'.format(ctc.Log.zero)),
 }
 
 def _fwd_bwd_cupy(alpha, beta, state_scores, repeat_mask, input_lengths, window_starts, S:ctc.semiring):
@@ -136,8 +136,8 @@ def loss_cupy(logits, targets, input_lengths, target_lengths, base_alignments, w
     return - (logz / target_lengths).mean()
 
 # Cell
-cupy_funcs[(torch.float32, ctc.Max)] = load_cupy_func('cuda/ctc_banded.cu', 'fwd_bwd_banded', FLOAT='float',  SUM='max3', MUL='add', ZERO=f'{ctc.Log.zero:E}')
-cupy_funcs[(torch.float64, ctc.Max)] = load_cupy_func('cuda/ctc_banded.cu', 'fwd_bwd_banded', FLOAT='double', SUM='max3', MUL='add', ZERO=f'{ctc.Log.zero:E}')
+cupy_funcs[(torch.float32, ctc.Max)] = load_cupy_func('cuda/ctc_banded.cu', 'fwd_bwd_banded', FLOAT='float',  SUM='max3', MUL='add', ZERO='{:E}'.format(ctc.Log.zero))
+cupy_funcs[(torch.float64, ctc.Max)] = load_cupy_func('cuda/ctc_banded.cu', 'fwd_bwd_banded', FLOAT='double', SUM='max3', MUL='add', ZERO='{:E}'.format(ctc.Log.zero))
 
 class _LogzViterbi(torch.autograd.Function):
     @staticmethod
