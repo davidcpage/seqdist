@@ -27,8 +27,8 @@ def compare_fwd_bwd(impl_A, impl_B, inputs, *args):
         fwds.append(to_np(fwd))
         bwds.append(to_np(inputs.grad))
         zero_grad(inputs)
-    print(f'fwd diff: {np.max(np.abs(fwds[0]-fwds[1])):.2e}')
-    print(f'bwd diff: {np.max(np.abs(bwds[0]-bwds[1])):.2e}')
+    print('fwd diff: {:.2e}'.format(np.max(np.abs(fwds[0]-fwds[1]))))
+    print('bwd diff: {:.2e}'.format(np.max(np.abs(bwds[0]-bwds[1]))))
     return fwds, bwds
 
 # Cell
@@ -50,7 +50,7 @@ def benchmark_fwd_bwd(fwd_impl, *inputs, warmup=5, nloops=20):
 
 def report(times):
     for k,v in times.items():
-        print(f'{k}: {v.mean():.2f}ms ({v.min():.2f}-{v.max():.2f}ms)')
+        print('{!s}: {:.2f}ms ({:.2f}-{:.2f}ms)'.format(k, v.mean(), v.min(), v.max()))
 
 # Cell
 def load_cupy_func(fname, name, **kwargs):
@@ -58,7 +58,7 @@ def load_cupy_func(fname, name, **kwargs):
     except: pass
     with open(fname) as f:
         code = f.read()
-    macros = [f'#define {k} {v}' for k,v in kwargs.items()]
+    macros = ['#define {!s} {!s}'.format(k, v) for k,v in kwargs.items()]
     code = '\n'.join(macros + [code])
     return cp.RawKernel(code, name)
 
@@ -67,6 +67,6 @@ def load_cupy_module(fname, **kwargs):
     except: pass
     with open(fname) as f:
         code = f.read()
-    macros = [f'#define {k} {v}' for k,v in kwargs.items()]
+    macros = ['#define {!s} {!s}'.format(k, v) for k,v in kwargs.items()]
     code = '\n'.join(macros + [code])
     return cp.RawModule(code=code)
