@@ -54,7 +54,7 @@ def report(times):
 
 # Cell
 def load_cupy_func(fname, name, **kwargs):
-    try: fname = (Path(__file__).parent / fname).resolve()
+    try: fname = str((Path(__file__).parent / fname).resolve())
     except: pass
     with open(fname) as f:
         code = f.read()
@@ -63,7 +63,7 @@ def load_cupy_func(fname, name, **kwargs):
     return cp.RawKernel(code, name)
 
 def load_cupy_module(fname, **kwargs):
-    try: fname = (Path(__file__).parent / fname).resolve()
+    try: fname = str((Path(__file__).parent / fname).resolve())
     except: pass
     with open(fname) as f:
         code = f.read()
