@@ -2,6 +2,7 @@
   "mctc": {
     "Overview": "/",
     "Utils": "/utils",
-    "CTC loss": "/CTC_loss"
+    "CTC loss": "/CTC_loss",
+    "CTC loss banded": "/CTC_loss_banded"
   }
 }
