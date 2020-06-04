@@ -34,7 +34,7 @@ def prepare_inputs(scores, targets, input_lengths, target_lengths, base_alignmen
     (T, N, C), device = scores.shape, scores.device
     num_states = target_lengths*2 + 1
     states = ctc.interleave_blanks(targets, blank_idx=0)
-    repeat_mask = torch.nn.functional.pad(states[:, 2:] == states[:, :-2], (2, 0), value=0.)
+    repeat_mask = torch.nn.functional.pad(states[:, 2:] == states[:, :-2], (2, 2), value=0.)
     window_starts = window_start_positions(base_alignments, input_lengths, width, num_states)
     windows = torch.arange(width, device=device) + window_starts.unsqueeze(-1)
 
@@ -123,12 +123,12 @@ cupy_funcs = {
 
 def _fwd_bwd_cupy(alpha, beta, state_scores, repeat_mask, input_lengths, window_starts, S:ctc.semiring):
     T, N, W = state_scores.shape
-    _, Lp = repeat_mask.shape
+    _, L = repeat_mask.shape #Note this L is Lp + 2
     alpha_T = torch.empty_like(alpha[0])
     with cp.cuda.Device(state_scores.device.index):
         cupy_funcs[(state_scores.dtype, S)](grid=(N, 2, 1), block=(W, 1, 1), shared_mem=2*8*W,
                args=(alpha_T.data_ptr(), alpha.data_ptr(), beta.data_ptr(), state_scores.data_ptr(), repeat_mask.data_ptr(),
-                     input_lengths.data_ptr(), window_starts.data_ptr(), N, Lp, W))
+                     input_lengths.data_ptr(), window_starts.data_ptr(), N, L, W))
     return alpha_T
 
 def loss_cupy(logits, targets, input_lengths, target_lengths, base_alignments, width):
