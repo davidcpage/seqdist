@@ -37,10 +37,11 @@ extern "C" __global__ void fwd_bwd_logspace(
             FLOAT *buf = smem + (t % 2) * blockDim.x;
             buf[tx] = b; __syncthreads();
             if (tx < L - 1) {
-                b1 = MUL(buf[tx+1], move_scores[(((t - 1) * N + bx) * (L - 1)) + tx]);
-                beta_move[((t - 1) * N + bx) * (L - 1) + tx] = b1;
+                b1 = MUL(buf[tx + 1], move_scores[(((t - 1) * N + bx) * (L - 1)) + tx]);
+                beta_move[((t - 1) * N + bx) * L + tx] = b1;
             }
-            b = beta_stay[((t - 1) * N + bx) * L + tx] = MUL(b, stay_scores[(((t - 1) * N + bx) * L) + tx]);
+            b = MUL(b, stay_scores[(((t - 1) * N + bx) * L) + tx]);
+            beta_stay[((t - 1) * N + bx) * L + tx] = b;
             b = SUM(b, b1);
         }
     }

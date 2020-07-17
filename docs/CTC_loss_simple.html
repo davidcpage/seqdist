@@ -143,7 +143,7 @@ description: "A simplified CTC loss for decoding lattices with only two options 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="logZ_fwd" class="doc_header"><code>logZ_fwd</code><a href="__main__.py#L5" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_fwd</code>(<strong><code>stay_scores</code></strong>, <strong><code>move_scores</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>S</code></strong>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7fe19553c340&gt;, sum=&lt;built-in method logsumexp of type object at 0x7fe19553c340&gt;)</code></em>)</p>
+<h4 id="logZ_fwd" class="doc_header"><code>logZ_fwd</code><a href="__main__.py#L5" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_fwd</code>(<strong><code>stay_scores</code></strong>, <strong><code>move_scores</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>S</code></strong>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f6153f3c340&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f6153f3c340&gt;)</code></em>)</p>
 </blockquote>
 
 </div>
@@ -179,16 +179,16 @@ description: "A simplified CTC loss for decoding lattices with only two options 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>tensor([970.6453, 971.6895, 982.3431, 972.2327, 976.6527, 977.2905, 979.2094,
-        979.4549, 984.2569, 977.5510, 969.8797, 981.0777, 982.6025, 981.8260,
-        975.4854, 980.4288, 983.0338, 984.4608, 975.9901, 973.8077, 983.5836,
-        984.6028, 981.6602, 980.5414, 976.8457, 980.7314, 966.9128, 968.4935,
-        982.5735, 983.4719, 982.3672, 981.2139, 968.8883, 981.0426, 976.7378,
-        976.1961, 979.2068, 981.1317, 977.9713, 961.0184, 971.9141, 969.5038,
-        979.3978, 978.5461, 982.9652, 964.3593, 980.6489, 984.6378, 979.3281,
-        984.9939, 978.5788, 961.8087, 972.8093, 980.8213, 970.1132, 981.3785,
-        975.8100, 964.0969, 982.7523, 972.8085, 976.3800, 984.9760, 970.7934,
-        982.0917], device=&#39;cuda:0&#39;, grad_fn=&lt;LogsumexpBackward&gt;)</pre>
+<pre>tensor([974.2330, 984.3713, 984.7618, 983.5563, 977.9988, 980.5652, 982.5593,
+        971.0525, 959.5686, 981.7110, 982.6719, 981.7672, 960.4211, 958.2485,
+        970.2556, 958.7040, 980.2366, 959.4419, 982.2386, 981.1763, 980.1992,
+        977.2121, 960.9742, 982.7201, 980.7336, 983.1967, 981.9204, 983.6624,
+        984.1556, 984.8323, 976.8654, 966.7563, 968.9673, 970.4185, 980.5213,
+        981.7200, 976.7703, 976.3128, 974.6606, 980.0289, 972.0240, 978.2053,
+        971.4316, 969.5367, 969.0744, 975.5978, 968.7987, 973.7723, 971.9407,
+        984.4995, 983.2872, 973.0983, 974.6730, 962.9532, 979.3806, 984.2042,
+        975.2693, 972.7799, 968.5809, 981.6971, 978.7980, 982.7258, 980.3069,
+        978.9800], device=&#39;cuda:0&#39;, grad_fn=&lt;LogsumexpBackward&gt;)</pre>
 </div>
 
 </div>
@@ -240,7 +240,7 @@ description: "A simplified CTC loss for decoding lattices with only two options 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="dot" class="doc_header"><code>dot</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc_simple.py#L63" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dot</code>(<strong><code>x</code></strong>, <strong><code>y</code></strong>, <strong><code>S</code></strong>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7fe19553c340&gt;, sum=&lt;built-in method logsumexp of type object at 0x7fe19553c340&gt;)</code></em>, <strong><code>dim</code></strong>=<em><code>-1</code></em>)</p>
+<h4 id="dot" class="doc_header"><code>dot</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc_simple.py#L63" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dot</code>(<strong><code>x</code></strong>, <strong><code>y</code></strong>, <strong><code>S</code></strong>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f6153f3c340&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f6153f3c340&gt;)</code></em>, <strong><code>dim</code></strong>=<em><code>-1</code></em>)</p>
 </blockquote>
 
 </div>
@@ -357,7 +357,7 @@ extending torch.autograd.</p>
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>fwd diff: 0.00e+00
-bwd diff: 5.82e-11
+bwd diff: 1.16e-10
 </pre>
 </div>
 </div>
@@ -443,6 +443,20 @@ extern &quot;C&quot; __global__ void fwd_bwd_logspace(
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Overwriting mctc/cuda/ctc_simple.cu
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
     {% endraw %}
 
@@ -498,7 +512,7 @@ extern &quot;C&quot; __global__ void fwd_bwd_logspace(
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>fwd diff: 0.00e+00
-bwd diff: 1.27e-02
+bwd diff: 0.00e+00
 </pre>
 </div>
 </div>
@@ -529,9 +543,9 @@ bwd diff: 1.27e-02
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>fwd: 19.44ms (19.22-19.71ms)
-bwd: 7.28ms (7.22-7.39ms)
-tot: 26.72ms (26.45-27.00ms)
+<pre>fwd: 19.42ms (19.04-21.83ms)
+bwd: 7.35ms (7.23-8.30ms)
+tot: 26.76ms (26.35-30.09ms)
 </pre>
 </div>
 </div>
