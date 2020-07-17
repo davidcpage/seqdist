@@ -143,7 +143,7 @@ description: "A simplified CTC loss for decoding lattices with only two options 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="logZ_fwd" class="doc_header"><code>logZ_fwd</code><a href="__main__.py#L5" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_fwd</code>(<strong><code>stay_scores</code></strong>, <strong><code>move_scores</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>S</code></strong>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f7de29fc340&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f7de29fc340&gt;)</code></em>)</p>
+<h4 id="logZ_fwd" class="doc_header"><code>logZ_fwd</code><a href="__main__.py#L5" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_fwd</code>(<strong><code>stay_scores</code></strong>, <strong><code>move_scores</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>S</code></strong>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7fe19553c340&gt;, sum=&lt;built-in method logsumexp of type object at 0x7fe19553c340&gt;)</code></em>)</p>
 </blockquote>
 
 </div>
@@ -240,7 +240,7 @@ description: "A simplified CTC loss for decoding lattices with only two options 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="dot" class="doc_header"><code>dot</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc_simple.py#L63" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dot</code>(<strong><code>x</code></strong>, <strong><code>y</code></strong>, <strong><code>S</code></strong>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f7de29fc340&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f7de29fc340&gt;)</code></em>, <strong><code>dim</code></strong>=<em><code>-1</code></em>)</p>
+<h4 id="dot" class="doc_header"><code>dot</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc_simple.py#L63" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dot</code>(<strong><code>x</code></strong>, <strong><code>y</code></strong>, <strong><code>S</code></strong>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7fe19553c340&gt;, sum=&lt;built-in method logsumexp of type object at 0x7fe19553c340&gt;)</code></em>, <strong><code>dim</code></strong>=<em><code>-1</code></em>)</p>
 </blockquote>
 
 </div>
@@ -374,6 +374,13 @@ bwd diff: 5.82e-11
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>NB: we defined beta_move to have size (T, N, L) not the more natural (T, N, L - 1) above. We did this so that we can stack it with beta_stay.</p>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -421,10 +428,11 @@ extern &quot;C&quot; __global__ void fwd_bwd_logspace(
             FLOAT *buf = smem + (t % 2) * blockDim.x;
             buf[tx] = b; __syncthreads();
             if (tx &lt; L - 1) {
-                b1 = MUL(buf[tx+1], move_scores[(((t - 1) * N + bx) * (L - 1)) + tx]);
-                beta_move[((t - 1) * N + bx) * (L - 1) + tx] = b1;
+                b1 = MUL(buf[tx + 1], move_scores[(((t - 1) * N + bx) * (L - 1)) + tx]);
+                beta_move[((t - 1) * N + bx) * L + tx] = b1;
             }
-            b = beta_stay[((t - 1) * N + bx) * L + tx] = MUL(b, stay_scores[(((t - 1) * N + bx) * L) + tx]);
+            b = MUL(b, stay_scores[(((t - 1) * N + bx) * L) + tx]);
+            beta_stay[((t - 1) * N + bx) * L + tx] = b;
             b = SUM(b, b1);
         }
     }
