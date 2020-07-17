@@ -11,8 +11,8 @@ index = {"to_np": "00_utils.ipynb",
          "report": "00_utils.ipynb",
          "load_cupy_func": "00_utils.ipynb",
          "load_cupy_module": "00_utils.ipynb",
-         "device": "02_CTC_loss_banded.ipynb",
-         "generate_sample_inputs": "01_CTC_loss.ipynb",
+         "device": "03_CTC_loss_simple.ipynb",
+         "generate_sample_inputs": "03_CTC_loss_simple.ipynb",
          "loss_pytorch": "01_CTC_loss.ipynb",
          "interleave_blanks": "01_CTC_loss.ipynb",
          "prepare_inputs": "02_CTC_loss_banded.ipynb",
@@ -24,7 +24,7 @@ index = {"to_np": "00_utils.ipynb",
          "masked_grad": "01_CTC_loss.ipynb",
          "loss_py": "02_CTC_loss_banded.ipynb",
          "loss_cupy": "02_CTC_loss_banded.ipynb",
-         "cupy_funcs": "02_CTC_loss_banded.ipynb",
+         "cupy_funcs": "03_CTC_loss_simple.ipynb",
          "max_grad": "01_CTC_loss.ipynb",
          "Max": "01_CTC_loss.ipynb",
          "viterbi_alignments": "02_CTC_loss_banded.ipynb",
@@ -32,11 +32,18 @@ index = {"to_np": "00_utils.ipynb",
          "loss_direct_cupy": "01_CTC_loss.ipynb",
          "Prob": "01_CTC_loss.ipynb",
          "window_start_positions": "02_CTC_loss_banded.ipynb",
-         "loss_masked": "02_CTC_loss_banded.ipynb"}
+         "loss_masked": "02_CTC_loss_banded.ipynb",
+         "logZ_fwd": "03_CTC_loss_simple.ipynb",
+         "dot": "03_CTC_loss_simple.ipynb",
+         "LogZ": "03_CTC_loss_simple.ipynb",
+         "logZ_py": "03_CTC_loss_simple.ipynb",
+         "mean": "03_CTC_loss_simple.ipynb",
+         "logZ_cupy": "03_CTC_loss_simple.ipynb"}
 
 modules = ["utils.py",
            "ctc.py",
-           "ctc_banded.py"]
+           "ctc_banded.py",
+           "ctc_simple.py"]
 
 doc_url = "https://davidcpage.github.io/mctc/"
 

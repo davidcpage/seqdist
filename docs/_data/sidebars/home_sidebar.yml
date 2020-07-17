@@ -18,6 +18,9 @@ entries:
     - output: web,pdf
       title: CTC loss banded
       url: /CTC_loss_banded
+    - output: web,pdf
+      title: CTC loss simple
+      url: /CTC_loss_simple
     output: web
     title: mctc
   output: web
