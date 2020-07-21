@@ -35,14 +35,13 @@ index = {"to_np": "00_utils.ipynb",
          "loss_masked": "02_CTC_loss_banded.ipynb",
          "logZ_fwd": "03_CTC_loss_simple.ipynb",
          "dot": "03_CTC_loss_simple.ipynb",
-         "LogZ": "03_CTC_loss_simple.ipynb",
+         "LogZ": "04_Normalisation.ipynb",
          "logZ_py": "04_Normalisation.ipynb",
          "mean": "03_CTC_loss_simple.ipynb",
          "logZ_cupy": "03_CTC_loss_simple.ipynb",
          "generate_test_example": "04_Normalisation.ipynb",
          "fused_batch_Mv": "04_Normalisation.ipynb",
-         "FusedBatchMvLogspace": "04_Normalisation.ipynb",
-         "fused_batch_Mv_logspace": "04_Normalisation.ipynb"}
+         "logZ": "04_Normalisation.ipynb"}
 
 modules = ["utils.py",
            "ctc.py",
