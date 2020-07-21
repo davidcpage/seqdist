@@ -21,6 +21,9 @@ entries:
     - output: web,pdf
       title: CTC loss simple
       url: /CTC_loss_simple
+    - output: web,pdf
+      title: Normalisation
+      url: /Normalisation
     output: web
     title: mctc
   output: web

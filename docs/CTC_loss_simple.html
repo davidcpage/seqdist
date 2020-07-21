@@ -143,7 +143,7 @@ description: "A simplified CTC loss for decoding lattices with only two options 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="logZ_fwd" class="doc_header"><code>logZ_fwd</code><a href="__main__.py#L5" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_fwd</code>(<strong><code>stay_scores</code></strong>, <strong><code>move_scores</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>S</code></strong>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f6153f3c340&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f6153f3c340&gt;)</code></em>)</p>
+<h4 id="logZ_fwd" class="doc_header"><code>logZ_fwd</code><a href="__main__.py#L5" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_fwd</code>(<strong><code>stay_scores</code></strong>, <strong><code>move_scores</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>S</code></strong>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f744bd7c340&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f744bd7c340&gt;)</code></em>)</p>
 </blockquote>
 
 </div>
@@ -240,7 +240,7 @@ description: "A simplified CTC loss for decoding lattices with only two options 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="dot" class="doc_header"><code>dot</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc_simple.py#L63" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dot</code>(<strong><code>x</code></strong>, <strong><code>y</code></strong>, <strong><code>S</code></strong>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f6153f3c340&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f6153f3c340&gt;)</code></em>, <strong><code>dim</code></strong>=<em><code>-1</code></em>)</p>
+<h4 id="dot" class="doc_header"><code>dot</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc_simple.py#L63" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dot</code>(<strong><code>x</code></strong>, <strong><code>y</code></strong>, <strong><code>S</code></strong>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f744bd7c340&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f744bd7c340&gt;)</code></em>, <strong><code>dim</code></strong>=<em><code>-1</code></em>)</p>
 </blockquote>
 
 </div>
@@ -388,7 +388,7 @@ bwd diff: 1.16e-10
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">writefile</span> cuda/ctc_simple.cu
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">writefile</span> mctc/cuda/ctc_simple.cu
 __device__ __forceinline__ FLOAT max2(FLOAT a, FLOAT a1) {
     return a &gt; a1 ? a : a1; 
 }
@@ -543,9 +543,9 @@ bwd diff: 0.00e+00
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>fwd: 19.42ms (19.04-21.83ms)
-bwd: 7.35ms (7.23-8.30ms)
-tot: 26.76ms (26.35-30.09ms)
+<pre>fwd: 19.56ms (19.31-21.06ms)
+bwd: 7.53ms (7.40-8.05ms)
+tot: 27.10ms (26.81-29.11ms)
 </pre>
 </div>
 </div>

@@ -3,8 +3,7 @@ __device__ __forceinline__ FLOAT max2(FLOAT a, FLOAT a1) {
 }
 
 __device__ __forceinline__ FLOAT logsumexp2(FLOAT a, FLOAT a1) {
-    FLOAT maxa = max2(a, a1); 
-    return maxa + log(exp(a-maxa) + exp(a1-maxa));
+    return a > a1 ? a + log1p(exp(a1 - a)) : a1 + log1p(exp(a - a1));
 }
 
 __device__ __forceinline__ FLOAT add(FLOAT a, FLOAT b) {return a + b;}

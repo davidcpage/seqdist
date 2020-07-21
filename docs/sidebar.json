@@ -4,6 +4,7 @@
     "Utils": "/utils",
     "CTC loss": "/CTC_loss",
     "CTC loss banded": "/CTC_loss_banded",
-    "CTC loss simple": "/CTC_loss_simple"
+    "CTC loss simple": "/CTC_loss_simple",
+    "Normalisation": "/Normalisation"
   }
 }
