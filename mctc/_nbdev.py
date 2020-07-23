@@ -41,7 +41,9 @@ index = {"to_np": "00_utils.ipynb",
          "logZ_cupy": "03_CTC_loss_simple.ipynb",
          "generate_test_example": "04_Normalisation.ipynb",
          "fused_batch_Mv": "04_Normalisation.ipynb",
-         "logZ": "04_Normalisation.ipynb"}
+         "LogZViterbi": "04_Normalisation.ipynb",
+         "logz": "04_Normalisation.ipynb",
+         "logz_viterbi": "04_Normalisation.ipynb"}
 
 modules = ["utils.py",
            "ctc.py",

@@ -35,9 +35,9 @@ def loss_pytorch(logits, targets, input_lengths, target_lengths, blank=0, reduct
     return nn.functional.ctc_loss(log_probs, targets, input_lengths, target_lengths, blank, reduction, zero_infinity)
 
 # Cell
-semiring = namedtuple('semiring', ('zero', 'one', 'mul', 'sum'))
+semiring = namedtuple('semiring', ('zero', 'one', 'mul', 'sum', 'dsum'))
 neginf = -1e38
-Log = semiring(zero=neginf, one=0., mul=torch.add, sum=torch.logsumexp)
+Log = semiring(zero=neginf, one=0., mul=torch.add, sum=torch.logsumexp, dsum=torch.softmax)
 
 def interleave_blanks(targets, blank_idx: int):
     N, L = targets.shape
@@ -140,7 +140,7 @@ def loss_cupy(logits, targets, input_lengths, target_lengths):
 def max_grad(x, dim=0):
     return torch.zeros_like(x).scatter_(dim, x.argmax(dim, True), 1.0)
 
-Max = semiring(zero=neginf, one=0., mul=torch.add, sum=(lambda x, dim=0: torch.max(x, dim=dim)[0]))
+Max = semiring(zero=neginf, one=0., mul=torch.add, sum=(lambda x, dim=0: torch.max(x, dim=dim)[0]), dsum=max_grad)
 cupy_funcs[(torch.float32, Max)] = load_cupy_func('cuda/ctc.cu', 'fwd_bwd_logspace', FLOAT='float',  SUM='max3', MUL='add', ZERO='{:E}'.format(Log.zero))
 cupy_funcs[(torch.float64, Max)] = load_cupy_func('cuda/ctc.cu', 'fwd_bwd_logspace', FLOAT='double', SUM='max3', MUL='add', ZERO='{:E}'.format(Log.zero))
 
@@ -169,7 +169,7 @@ def soft_alignments(logits, targets, input_lengths, target_lengths, beta=1.0):
     return state_scores.grad
 
 # Cell
-Prob = semiring(zero=0., one=1., mul=torch.mul, sum=torch.sum)
+Prob = semiring(zero=0., one=1., mul=torch.mul, sum=torch.sum, dsum=(lambda x, dim=0: torch.ones_like))
 cupy_funcs[(torch.float64, Prob)] = load_cupy_func('cuda/ctc.cu', 'fwd_bwd_logspace', FLOAT='double', SUM='sum3', MUL='mul', ZERO='0.0')
 
 class _LogzDirect(torch.autograd.Function):

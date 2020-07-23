@@ -129,7 +129,7 @@ description: "Partition function calculations."
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ScriptFunction object at 0x7ff8877e7200>" class="doc_header"><code>ScriptFunction object at 0x7ff8877e7200></code><a href="" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ScriptFunction object at 0x7ff8877e7200></code>()</p>
+<h4 id="ScriptFunction object at 0x7f8f17c1c3b8>" class="doc_header"><code>ScriptFunction object at 0x7f8f17c1c3b8></code><a href="" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ScriptFunction object at 0x7f8f17c1c3b8></code>()</p>
 </blockquote>
 
 </div>
@@ -213,20 +213,6 @@ extern &quot;C&quot; __global__ void fwd(
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Overwriting mctc/cuda/fused_bmv.cu
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
@@ -248,7 +234,7 @@ extern &quot;C&quot; __global__ void fwd(
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="fused_batch_Mv" class="doc_header"><code>fused_batch_Mv</code><a href="__main__.py#L9" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>fused_batch_Mv</code>(<strong><code>Ms</code></strong>, <strong><code>alpha_0</code></strong>)</p>
+<h4 id="fused_batch_Mv" class="doc_header"><code>fused_batch_Mv</code><a href="__main__.py#L12" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>fused_batch_Mv</code>(<strong><code>Ms</code></strong>, <strong><code>alpha_0</code></strong>, <strong><code>S</code></strong>:<a href="/mctc/CTC_loss#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f8f601bc340&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f8f601bc340&gt;, dsum=&lt;built-in method softmax of type object at 0x7f8f601bc340&gt;)</code></em>)</p>
 </blockquote>
 
 </div>
@@ -273,6 +259,58 @@ extern &quot;C&quot; __global__ void fwd(
 
 <div class="output_markdown rendered_html output_subarea ">
 <h2 id="LogZ" class="doc_header"><code>class</code> <code>LogZ</code><a href="" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>LogZ</code>() :: <code>Function</code></p>
+</blockquote>
+<p>Records operation history and defines formulas for differentiating ops.</p>
+<p>Every operation performed on :class:<code>Tensor</code> s creates a new function
+object, that performs the computation, and records that it happened.
+The history is retained in the form of a DAG of functions, with edges
+denoting data dependencies (<code>input &lt;- output</code>). Then, when backward is
+called, the graph is processed in the topological ordering, by calling
+:func:<code>backward</code> methods of each :class:<code>Function</code> object, and passing
+returned gradients on to next :class:<code>Function</code> s.</p>
+<p>Normally, the only way users interact with functions is by creating
+subclasses and defining new operations. This is a recommended way of
+extending torch.autograd.</p>
+<p>Examples::</p>
+
+<pre><code>&gt;&gt;&gt; class Exp(Function):
+&gt;&gt;&gt;
+&gt;&gt;&gt;     @staticmethod
+&gt;&gt;&gt;     def forward(ctx, i):
+&gt;&gt;&gt;         result = i.exp()
+&gt;&gt;&gt;         ctx.save_for_backward(result)
+&gt;&gt;&gt;         return result
+&gt;&gt;&gt;
+&gt;&gt;&gt;     @staticmethod
+&gt;&gt;&gt;     def backward(ctx, grad_output):
+&gt;&gt;&gt;         result, = ctx.saved_tensors
+&gt;&gt;&gt;         return grad_output * result
+&gt;&gt;&gt;
+&gt;&gt;&gt; #Use it by calling the apply method:
+&gt;&gt;&gt; output = Exp.apply(input)</code></pre>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="LogZViterbi" class="doc_header"><code>class</code> <code>LogZViterbi</code><a href="" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>LogZViterbi</code>() :: <code>Function</code></p>
 </blockquote>
 <p>Records operation history and defines formulas for differentiating ops.</p>
 <p>Every operation performed on :class:<code>Tensor</code> s creates a new function
