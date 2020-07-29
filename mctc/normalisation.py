@@ -67,7 +67,7 @@ def _logz_fwd(ctx, Ms, alpha_0, beta_T, S:semiring=Log):
 def _logz_bwd(ctx, g, S:semiring=Log):
     Ms, alpha, beta_T = ctx.saved_tensors
     T, N, n_state, _ = Ms.shape
-    beta = fused_batch_Mv(Ms.transpose(2, 3).flip(0), beta_T)
+    beta = fused_batch_Mv(Ms.transpose(2, 3).flip(0), beta_T, S)
     Ms_grad = S.mul(S.mul(Ms, alpha[:-1,:,None,:]), (beta[:-1, :, :, None]).flip(0))
     Ms_grad = S.dsum(Ms_grad.reshape(T, N, -1), dim=2).reshape(T, N, n_state, n_state)
     return Ms_grad * g[None, :, None, None], None, None, None
