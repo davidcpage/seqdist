@@ -49,7 +49,7 @@ class _LogZ(torch.autograd.Function):
         g = S.dsum(g.reshape(T, N, -1), dim=2).reshape(T, N, C, nz)
         return grad[None, :, None, None] * g, None, None, None, None, None
 
-logZ_py = partial(_LogZ.apply, S=Log, scan=Mv_scan_py)
+logZ_py = partial(_LogZ.apply, Log, Mv_scan_py)
 
 # Cell
 from torch.nn.functional import pad
@@ -100,6 +100,6 @@ def Mv_scan_cupy(Ms, idx, v0, S:semiring):
                args=(alpha.data_ptr(), Ms.data_ptr(), idx.to(dtype=torch.int, device=Ms.device).data_ptr(), T, N, C, nz))
     return alpha
 
-logZ = partial(_LogZ.apply, S=Log, scan=Mv_scan_cupy)
+logZ = partial(_LogZ.apply, Log, Mv_scan_cupy)
 
 ctc_loss = partial(_ctc_loss, scan=Mv_scan_cupy)
