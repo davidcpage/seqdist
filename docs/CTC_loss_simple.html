@@ -7,6 +7,7 @@ sidebar: home_sidebar
 
 summary: "A simplified CTC loss for decoding lattices with only two options stay/move. This can be used for decoding without collapsing of repeats."
 description: "A simplified CTC loss for decoding lattices with only two options stay/move. This can be used for decoding without collapsing of repeats."
+nb_path: "notebooks/03_CTC_loss_simple.ipynb"
 ---
 <!--
 
@@ -143,7 +144,7 @@ description: "A simplified CTC loss for decoding lattices with only two options 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="logZ_fwd" class="doc_header"><code>logZ_fwd</code><a href="__main__.py#L5" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_fwd</code>(<strong><code>stay_scores</code></strong>, <strong><code>move_scores</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>S</code></strong>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f744bd7c340&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f744bd7c340&gt;)</code></em>)</p>
+<h4 id="logZ_fwd" class="doc_header"><code>logZ_fwd</code><a href="__main__.py#L5" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_fwd</code>(<strong><code>stay_scores</code></strong>, <strong><code>move_scores</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>S</code></strong>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f0c5aeec620&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f0c5aeec620&gt;, dsum=&lt;built-in method softmax of type object at 0x7f0c5aeec620&gt;)</code></em>)</p>
 </blockquote>
 
 </div>
@@ -206,7 +207,7 @@ description: "A simplified CTC loss for decoding lattices with only two options 
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#report(benchmark_fwd_bwd((lambda *x: logZ_fwd(*x).sum()), *sample_inputs))</span>
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
     </div>
@@ -240,7 +241,7 @@ description: "A simplified CTC loss for decoding lattices with only two options 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="dot" class="doc_header"><code>dot</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc_simple.py#L63" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dot</code>(<strong><code>x</code></strong>, <strong><code>y</code></strong>, <strong><code>S</code></strong>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f744bd7c340&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f744bd7c340&gt;)</code></em>, <strong><code>dim</code></strong>=<em><code>-1</code></em>)</p>
+<h4 id="dot" class="doc_header"><code>dot</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc_simple.py#L63" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dot</code>(<strong><code>x</code></strong>, <strong><code>y</code></strong>, <strong><code>S</code></strong>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f0c5aeec620&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f0c5aeec620&gt;, dsum=&lt;built-in method softmax of type object at 0x7f0c5aeec620&gt;)</code></em>, <strong><code>dim</code></strong>=<em><code>-1</code></em>)</p>
 </blockquote>
 
 </div>
@@ -267,6 +268,8 @@ description: "A simplified CTC loss for decoding lattices with only two options 
 <h2 id="LogZ" class="doc_header"><code>class</code> <code>LogZ</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/ctc_simple.py#L66" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>LogZ</code>() :: <code>Function</code></p>
 </blockquote>
 <p>Records operation history and defines formulas for differentiating ops.</p>
+<p>See the Note on extending the autograd engine for more details on how to use
+this class: <a href="https://pytorch.org/docs/stable/notes/extending.html#extending-torch-autograd">https://pytorch.org/docs/stable/notes/extending.html#extending-torch-autograd</a></p>
 <p>Every operation performed on :class:<code>Tensor</code> s creates a new function
 object, that performs the computation, and records that it happened.
 The history is retained in the form of a DAG of functions, with edges
@@ -388,55 +391,55 @@ bwd diff: 1.16e-10
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">writefile</span> mctc/cuda/ctc_simple.cu
-__device__ __forceinline__ FLOAT max2(FLOAT a, FLOAT a1) {
-    return a &gt; a1 ? a : a1; 
-}
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%writefile</span> mctc/cuda/ctc_simple.cu
+<span class="n">__device__</span> <span class="n">__forceinline__</span> <span class="n">FLOAT</span> <span class="n">max2</span><span class="p">(</span><span class="n">FLOAT</span> <span class="n">a</span><span class="p">,</span> <span class="n">FLOAT</span> <span class="n">a1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="n">a1</span> <span class="err">?</span> <span class="n">a</span> <span class="p">:</span> <span class="n">a1</span><span class="p">;</span> 
+<span class="p">}</span>
 
-__device__ __forceinline__ FLOAT logsumexp2(FLOAT a, FLOAT a1) {
-    FLOAT maxa = max2(a, a1); 
-    return maxa + log(exp(a-maxa) + exp(a1-maxa));
-}
+<span class="n">__device__</span> <span class="n">__forceinline__</span> <span class="n">FLOAT</span> <span class="n">logsumexp2</span><span class="p">(</span><span class="n">FLOAT</span> <span class="n">a</span><span class="p">,</span> <span class="n">FLOAT</span> <span class="n">a1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">FLOAT</span> <span class="n">maxa</span> <span class="o">=</span> <span class="n">max2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a1</span><span class="p">);</span> 
+    <span class="k">return</span> <span class="n">maxa</span> <span class="o">+</span> <span class="n">log</span><span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="n">maxa</span><span class="p">)</span> <span class="o">+</span> <span class="n">exp</span><span class="p">(</span><span class="n">a1</span><span class="o">-</span><span class="n">maxa</span><span class="p">));</span>
+<span class="p">}</span>
 
-__device__ __forceinline__ FLOAT add(FLOAT a, FLOAT b) {return a + b;}
-__device__ __forceinline__ FLOAT mul(FLOAT a, FLOAT b) {return a * b;}
+<span class="n">__device__</span> <span class="n">__forceinline__</span> <span class="n">FLOAT</span> <span class="n">add</span><span class="p">(</span><span class="n">FLOAT</span> <span class="n">a</span><span class="p">,</span> <span class="n">FLOAT</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;}</span>
+<span class="n">__device__</span> <span class="n">__forceinline__</span> <span class="n">FLOAT</span> <span class="n">mul</span><span class="p">(</span><span class="n">FLOAT</span> <span class="n">a</span><span class="p">,</span> <span class="n">FLOAT</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span><span class="p">;}</span>
 
-extern &quot;C&quot; __global__ void fwd_bwd_logspace(
-    FLOAT* __restrict__ alpha, FLOAT* __restrict__ beta_T,
-    FLOAT* __restrict__ beta_stay, FLOAT* __restrict__ beta_move, 
-    const FLOAT* __restrict__ stay_scores, const FLOAT* __restrict__ move_scores,
-    int T, int N, int L
-) {
-    int bx = blockIdx.x, tx = threadIdx.x;
-    if (tx &gt;= L) return;
-    extern __shared__ FLOAT smem[];
-    if (blockIdx.y == 0) {
-        FLOAT a = ZERO, a1 = ZERO;
-        a = alpha[bx * L + tx];
-        for (int t = 0; t &lt; T; t++) {
-            FLOAT *buf = smem + (t % 2) * blockDim.x;
-            buf[tx] = a; __syncthreads(); 
-            if (tx &gt; 0) {a1 = MUL(move_scores[(t * N + bx) * (L - 1) + tx - 1], buf[tx - 1]);}
-            a = SUM(MUL(stay_scores[(t * N + bx) * L + tx], a), a1);
-            alpha[((t + 1) * N + bx) * L + tx] = a;
-        }
-    }
-    else {
-        FLOAT b = ZERO, b1 = ZERO;
-        b = beta_T[bx * L + tx];
-        for (int t = T; t &gt; 0; t--) {
-            FLOAT *buf = smem + (t % 2) * blockDim.x;
-            buf[tx] = b; __syncthreads();
-            if (tx &lt; L - 1) {
-                b1 = MUL(buf[tx + 1], move_scores[(((t - 1) * N + bx) * (L - 1)) + tx]);
-                beta_move[((t - 1) * N + bx) * L + tx] = b1;
-            }
-            b = MUL(b, stay_scores[(((t - 1) * N + bx) * L) + tx]);
-            beta_stay[((t - 1) * N + bx) * L + tx] = b;
-            b = SUM(b, b1);
-        }
-    }
-  }
+<span class="n">extern</span> <span class="s2">&quot;C&quot;</span> <span class="n">__global__</span> <span class="n">void</span> <span class="n">fwd_bwd_logspace</span><span class="p">(</span>
+    <span class="n">FLOAT</span><span class="o">*</span> <span class="n">__restrict__</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">FLOAT</span><span class="o">*</span> <span class="n">__restrict__</span> <span class="n">beta_T</span><span class="p">,</span>
+    <span class="n">FLOAT</span><span class="o">*</span> <span class="n">__restrict__</span> <span class="n">beta_stay</span><span class="p">,</span> <span class="n">FLOAT</span><span class="o">*</span> <span class="n">__restrict__</span> <span class="n">beta_move</span><span class="p">,</span> 
+    <span class="n">const</span> <span class="n">FLOAT</span><span class="o">*</span> <span class="n">__restrict__</span> <span class="n">stay_scores</span><span class="p">,</span> <span class="n">const</span> <span class="n">FLOAT</span><span class="o">*</span> <span class="n">__restrict__</span> <span class="n">move_scores</span><span class="p">,</span>
+    <span class="nb">int</span> <span class="n">T</span><span class="p">,</span> <span class="nb">int</span> <span class="n">N</span><span class="p">,</span> <span class="nb">int</span> <span class="n">L</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="nb">int</span> <span class="n">bx</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">tx</span> <span class="o">=</span> <span class="n">threadIdx</span><span class="o">.</span><span class="n">x</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">tx</span> <span class="o">&gt;=</span> <span class="n">L</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+    <span class="n">extern</span> <span class="n">__shared__</span> <span class="n">FLOAT</span> <span class="n">smem</span><span class="p">[];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">blockIdx</span><span class="o">.</span><span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">FLOAT</span> <span class="n">a</span> <span class="o">=</span> <span class="n">ZERO</span><span class="p">,</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">ZERO</span><span class="p">;</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">[</span><span class="n">bx</span> <span class="o">*</span> <span class="n">L</span> <span class="o">+</span> <span class="n">tx</span><span class="p">];</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="n">T</span><span class="p">;</span> <span class="n">t</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">FLOAT</span> <span class="o">*</span><span class="n">buf</span> <span class="o">=</span> <span class="n">smem</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">blockDim</span><span class="o">.</span><span class="n">x</span><span class="p">;</span>
+            <span class="n">buf</span><span class="p">[</span><span class="n">tx</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span> <span class="n">__syncthreads</span><span class="p">();</span> 
+            <span class="k">if</span> <span class="p">(</span><span class="n">tx</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span><span class="n">a1</span> <span class="o">=</span> <span class="n">MUL</span><span class="p">(</span><span class="n">move_scores</span><span class="p">[(</span><span class="n">t</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">bx</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">L</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">tx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">buf</span><span class="p">[</span><span class="n">tx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]);}</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">SUM</span><span class="p">(</span><span class="n">MUL</span><span class="p">(</span><span class="n">stay_scores</span><span class="p">[(</span><span class="n">t</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">bx</span><span class="p">)</span> <span class="o">*</span> <span class="n">L</span> <span class="o">+</span> <span class="n">tx</span><span class="p">],</span> <span class="n">a</span><span class="p">),</span> <span class="n">a1</span><span class="p">);</span>
+            <span class="n">alpha</span><span class="p">[((</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">bx</span><span class="p">)</span> <span class="o">*</span> <span class="n">L</span> <span class="o">+</span> <span class="n">tx</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="n">FLOAT</span> <span class="n">b</span> <span class="o">=</span> <span class="n">ZERO</span><span class="p">,</span> <span class="n">b1</span> <span class="o">=</span> <span class="n">ZERO</span><span class="p">;</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">beta_T</span><span class="p">[</span><span class="n">bx</span> <span class="o">*</span> <span class="n">L</span> <span class="o">+</span> <span class="n">tx</span><span class="p">];</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">t</span> <span class="o">=</span> <span class="n">T</span><span class="p">;</span> <span class="n">t</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="n">t</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">FLOAT</span> <span class="o">*</span><span class="n">buf</span> <span class="o">=</span> <span class="n">smem</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">blockDim</span><span class="o">.</span><span class="n">x</span><span class="p">;</span>
+            <span class="n">buf</span><span class="p">[</span><span class="n">tx</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span> <span class="n">__syncthreads</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">tx</span> <span class="o">&lt;</span> <span class="n">L</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">b1</span> <span class="o">=</span> <span class="n">MUL</span><span class="p">(</span><span class="n">buf</span><span class="p">[</span><span class="n">tx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">move_scores</span><span class="p">[(((</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">bx</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">L</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="n">tx</span><span class="p">]);</span>
+                <span class="n">beta_move</span><span class="p">[((</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">bx</span><span class="p">)</span> <span class="o">*</span> <span class="n">L</span> <span class="o">+</span> <span class="n">tx</span><span class="p">]</span> <span class="o">=</span> <span class="n">b1</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">MUL</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">stay_scores</span><span class="p">[(((</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">bx</span><span class="p">)</span> <span class="o">*</span> <span class="n">L</span><span class="p">)</span> <span class="o">+</span> <span class="n">tx</span><span class="p">]);</span>
+            <span class="n">beta_stay</span><span class="p">[((</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">bx</span><span class="p">)</span> <span class="o">*</span> <span class="n">L</span> <span class="o">+</span> <span class="n">tx</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">SUM</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">b1</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
 </pre></div>
 
     </div>

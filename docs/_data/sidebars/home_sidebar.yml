@@ -11,19 +11,22 @@ entries:
       url: /
     - output: web,pdf
       title: Utils
-      url: /utils
+      url: utils.html
     - output: web,pdf
       title: CTC loss
-      url: /CTC_loss
+      url: CTC_loss.html
     - output: web,pdf
       title: CTC loss banded
-      url: /CTC_loss_banded
+      url: CTC_loss_banded.html
     - output: web,pdf
       title: CTC loss simple
-      url: /CTC_loss_simple
+      url: CTC_loss_simple.html
     - output: web,pdf
       title: Normalisation
-      url: /Normalisation
+      url: Normalisation.html
+    - output: web,pdf
+      title: Sparse
+      url: Sparse.html
     output: web
     title: mctc
   output: web

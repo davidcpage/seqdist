@@ -1,51 +1,78 @@
-__device__ __forceinline__ FLOAT max2(FLOAT a, FLOAT b) {return a > b ? a : b;}
-__device__ __forceinline__ FLOAT logsumexp2(FLOAT a, FLOAT b) {return a > b ? log1p(exp(b - a)) + a : log1p(exp(a - b)) + b;}
 __device__ __forceinline__ FLOAT add(FLOAT a, FLOAT b) {return a + b;}
-
+__device__ __forceinline__ FLOAT max_(FLOAT *s) {
+    FLOAT mx = s[0];
+    for (int j = 1; j < NZ; j++) {
+        mx = mx > s[j] ? mx : s[j];
+    }
+    return mx;
+}
+__device__ __forceinline__ FLOAT logsumexp(FLOAT *s) {
+    FLOAT mx = max_(s);
+    FLOAT res = exp(s[0] - mx);
+    for (int j = 1; j < NZ; j++) {
+        res += exp(s[j] - mx);
+    }
+    return log(res) + mx;
+}
+    
 extern "C" __global__ void logZ_fwd_bwd(
     FLOAT* __restrict__ logZ,
     FLOAT* __restrict__ Ms_grad,
     const FLOAT* __restrict__ Ms,
-    const FLOAT* __restrict__ Ms_T,
     const FLOAT* __restrict__ v0,
     const FLOAT* __restrict__ vT,
     const int* __restrict__ idx,
     const int* __restrict__ idx_T,
     int T, int N, int C
 ) {
-    int bx = blockIdx.x, tx = threadIdx.x;
+    int bx = blockIdx.x;
+    int tx = threadIdx.x * K;
     if (tx >= C) return;
     extern __shared__ FLOAT smem[];
     
-    FLOAT a = v0[bx * C + tx];
-    FLOAT tmp;
+    FLOAT a[K];
+    for (int k = 0; k < K; k++) {
+        a[k] = v0[bx * C + tx + k]; 
+    }
+    __syncthreads();
+    
+    FLOAT s[NZ];
     for (int t = 0; t < T; t++) {
-        FLOAT *buf = smem + (t % 2) * blockDim.x;
-        buf[tx] = a; __syncthreads();      
-        int i = (((t * N + bx) * C) + tx) * NZ;
-        a = MUL(buf[idx[tx * NZ]], Ms[i]);
-        Ms_grad[i] = a;
-        for (int j = 1; j < NZ; j++) {
-            tmp = MUL(buf[idx[tx * NZ + j]], Ms[i + j]);
-            Ms_grad[i + j] = tmp;
-            a = ADD(a, tmp);
+        FLOAT *buf = smem + (t % 2) * blockDim.x * K;
+        for (int k = 0; k < K; k++) {
+            buf[tx+k] = a[k];
+        }
+        __syncthreads();
+        int i = (t * N + bx) * C * NZ;
+        for (int k = 0; k < K; k++) {
+            for (int j = 0; j < NZ; j++) {
+                s[j] = MUL(buf[idx[(tx + k) * NZ + j]], Ms[i + (tx + k) * NZ + j]);
+                Ms_grad[i + (tx + k) * NZ + j] = s[j];
+            }
+            a[k] = SUM(s);        
         }
     }
 
-    FLOAT b = vT[bx * C + tx];
-    logZ[bx * C + tx] = MUL(a, b);
+    for (int k = 0; k < K; k++) {
+        logZ[bx * C + tx + k] = MUL(a[k], vT[bx * C + tx + k]);
+        a[k] = vT[bx * C + tx + k];
+    }
     __syncthreads();
 
     for (int t = T - 1; t >= 0; t--) {
-        FLOAT *buf = smem + (t % 2) * blockDim.x;
-        buf[tx] = b; __syncthreads(); 
-        int i = (((t * N + bx) * C) + tx) * NZ;
-        for (int j = 0; j < NZ; j++) {
-            Ms_grad[i + j] = MUL(Ms_grad[i + j], b);
+        FLOAT *buf = smem + (t % 2) * blockDim.x * K;
+        for (int k = 0; k < K; k++) {
+            buf[tx+k] = a[k];
         }
-        b = MUL(buf[idx_T[tx * NZ]], Ms_T[i]);
-        for (int j = 1; j < NZ; j++) {
-            b = ADD(b, MUL(buf[idx_T[tx * NZ + j]], Ms_T[i + j]));
-        }
+        __syncthreads(); 
+        int i = (t * N + bx) * C * NZ;
+        for (int k = 0; k < K; k++) {
+            for (int j = 0; j < NZ; j++) {
+                int ix = idx_T[(tx + k) * NZ + j];
+                Ms_grad[i + (tx + k) * NZ + j] = MUL(Ms_grad[i + (tx + k) * NZ + j], a[k]);
+                s[j] = MUL(buf[ix / NZ], Ms[i + ix]);
+            }            
+            a[k] = SUM(s);
+        }        
     }
 }

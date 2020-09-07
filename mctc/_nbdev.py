@@ -44,15 +44,11 @@ index = {"to_np": "00_utils.ipynb",
          "LogZViterbi": "04_Normalisation.ipynb",
          "logz": "04_Normalisation.ipynb",
          "Mv_scan_py": "05_Sparse.ipynb",
-         "transpose": "05_Sparse.ipynb",
          "logZ_scan_py": "05_Sparse.ipynb",
          "ctc_loss_scan_py": "05_Sparse.ipynb",
          "Mv_scan_cupy": "05_Sparse.ipynb",
          "logZ_scan": "05_Sparse.ipynb",
-         "ctc_loss_scan": "05_Sparse.ipynb",
-         "cupy_func": "05_Sparse.ipynb",
-         "logZ": "05_Sparse.ipynb",
-         "ctc_loss": "05_Sparse.ipynb"}
+         "ctc_loss_scan": "05_Sparse.ipynb"}
 
 modules = ["utils.py",
            "ctc.py",

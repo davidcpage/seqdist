@@ -1,10 +1,11 @@
 {
   "mctc": {
     "Overview": "/",
-    "Utils": "/utils",
-    "CTC loss": "/CTC_loss",
-    "CTC loss banded": "/CTC_loss_banded",
-    "CTC loss simple": "/CTC_loss_simple",
-    "Normalisation": "/Normalisation"
+    "Utils": "utils.html",
+    "CTC loss": "CTC_loss.html",
+    "CTC loss banded": "CTC_loss_banded.html",
+    "CTC loss simple": "CTC_loss_simple.html",
+    "Normalisation": "Normalisation.html",
+    "Sparse": "Sparse.html"
   }
 }
