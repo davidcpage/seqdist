@@ -105,7 +105,7 @@ def cupy_func(dtype, S, NZ, K):
     float_types = {torch.float32: 'float', torch.float64: 'double'}
     ops = {
         Log: {'sum': 'logsumexp', 'mul': 'add'},
-        Max: {'sum': 'max', 'mul': 'add'},
+        Max: {'sum': 'max_', 'mul': 'add'},
     }
     fname = 'cuda/sparse_logZ.cu'
     return load_cupy_func(fname, 'logZ_fwd_bwd', FLOAT=float_types[dtype],  MUL=ops[S]['mul'], ZERO='{:E}'.format(S.zero), SUM=ops[S]['sum'], NZ=NZ, K=K)
