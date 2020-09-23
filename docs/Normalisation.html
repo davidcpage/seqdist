@@ -2,6 +2,7 @@
 
 title: Normalisation
 
+
 keywords: fastai
 sidebar: home_sidebar
 
@@ -73,7 +74,7 @@ nb_path: "notebooks/04_Normalisation.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="generate_test_example" class="doc_header"><code>generate_test_example</code><a href="https://github.com/davidcpage/mctc/tree/master/mctc/normalisation.py#L14" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>generate_test_example</code>(<strong><code>T</code></strong>, <strong><code>N</code></strong>, <strong><code>n_state</code></strong>, <strong><code>dtype</code></strong>=<em><code>torch.float32</code></em>)</p>
+<h4 id="generate_test_example" class="doc_header"><code>generate_test_example</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/normalisation.py#L14" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>generate_test_example</code>(<strong><code>T</code></strong>, <strong><code>N</code></strong>, <strong><code>n_state</code></strong>, <strong><code>dtype</code></strong>=<em><code>torch.float32</code></em>)</p>
 </blockquote>
 
 </div>
@@ -130,7 +131,7 @@ nb_path: "notebooks/04_Normalisation.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ScriptFunction object at 0x7f8326ac4090>" class="doc_header"><code>ScriptFunction object at 0x7f8326ac4090></code><a href="" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ScriptFunction object at 0x7f8326ac4090></code>()</p>
+<h4 id="ScriptFunction object at 0x7f30eac7baf0>" class="doc_header"><code>ScriptFunction object at 0x7f30eac7baf0></code><a href="" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ScriptFunction object at 0x7f30eac7baf0></code>()</p>
 </blockquote>
 
 </div>
@@ -173,41 +174,41 @@ nb_path: "notebooks/04_Normalisation.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%writefile</span> cuda/fused_bmv.cu
-<span class="n">__device__</span> <span class="n">__forceinline__</span> <span class="n">FLOAT</span> <span class="n">max2</span><span class="p">(</span><span class="n">FLOAT</span> <span class="n">a</span><span class="p">,</span> <span class="n">FLOAT</span> <span class="n">a1</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="n">a1</span> <span class="err">?</span> <span class="n">a</span> <span class="p">:</span> <span class="n">a1</span><span class="p">;</span> 
-<span class="p">}</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">writefile</span> cuda/fused_bmv.cu
+__device__ __forceinline__ FLOAT max2(FLOAT a, FLOAT a1) {
+    return a &gt; a1 ? a : a1; 
+}
 
-<span class="n">__device__</span> <span class="n">__forceinline__</span> <span class="n">FLOAT</span> <span class="n">logsumexp2</span><span class="p">(</span><span class="n">FLOAT</span> <span class="n">a</span><span class="p">,</span> <span class="n">FLOAT</span> <span class="n">a1</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">FLOAT</span> <span class="n">maxa</span> <span class="o">=</span> <span class="n">max2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a1</span><span class="p">);</span> 
-    <span class="k">return</span> <span class="n">maxa</span> <span class="o">+</span> <span class="n">log</span><span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="n">maxa</span><span class="p">)</span> <span class="o">+</span> <span class="n">exp</span><span class="p">(</span><span class="n">a1</span><span class="o">-</span><span class="n">maxa</span><span class="p">));</span>
-<span class="p">}</span>
+__device__ __forceinline__ FLOAT logsumexp2(FLOAT a, FLOAT a1) {
+    FLOAT maxa = max2(a, a1); 
+    return maxa + log(exp(a-maxa) + exp(a1-maxa));
+}
 
-<span class="n">__device__</span> <span class="n">__forceinline__</span> <span class="n">FLOAT</span> <span class="n">add</span><span class="p">(</span><span class="n">FLOAT</span> <span class="n">a</span><span class="p">,</span> <span class="n">FLOAT</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;}</span>
-<span class="n">__device__</span> <span class="n">__forceinline__</span> <span class="n">FLOAT</span> <span class="n">mul</span><span class="p">(</span><span class="n">FLOAT</span> <span class="n">a</span><span class="p">,</span> <span class="n">FLOAT</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span><span class="p">;}</span>
+__device__ __forceinline__ FLOAT add(FLOAT a, FLOAT b) {return a + b;}
+__device__ __forceinline__ FLOAT mul(FLOAT a, FLOAT b) {return a * b;}
 
-<span class="n">extern</span> <span class="s2">&quot;C&quot;</span> <span class="n">__global__</span> <span class="n">void</span> <span class="n">fwd</span><span class="p">(</span>
-    <span class="n">FLOAT</span><span class="o">*</span> <span class="n">__restrict__</span> <span class="n">alpha</span><span class="p">,</span>
-    <span class="n">const</span> <span class="n">FLOAT</span><span class="o">*</span> <span class="n">__restrict__</span> <span class="n">Ms</span><span class="p">,</span> 
-    <span class="nb">int</span> <span class="n">T</span><span class="p">,</span> <span class="nb">int</span> <span class="n">N</span><span class="p">,</span> <span class="nb">int</span> <span class="n">n_state</span>
-<span class="p">)</span> <span class="p">{</span>
-    <span class="o">//</span> <span class="n">Ms</span> <span class="ow">is</span> <span class="n">shape</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">n_state</span><span class="p">,</span> <span class="n">n_state</span><span class="p">)</span>
-    <span class="o">//</span> <span class="n">alpha</span> <span class="ow">is</span> <span class="n">shape</span> <span class="p">(</span><span class="n">T</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">n_state</span><span class="p">)</span>
-    <span class="o">//</span> <span class="n">assumes</span> <span class="n">blockDim</span> <span class="o">=</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span class="n">threadDim</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_state</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+extern &quot;C&quot; __global__ void fwd(
+    FLOAT* __restrict__ alpha,
+    const FLOAT* __restrict__ Ms, 
+    int T, int N, int n_state
+) {
+    // Ms is shape (T, N, n_state, n_state)
+    // alpha is shape (T + 1, N, n_state)
+    // assumes blockDim = (N, 1, 1) and threadDim = (n_state, 1, 1)
 
-    <span class="nb">int</span> <span class="n">bx</span> <span class="o">=</span> <span class="n">blockIdx</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">tx</span> <span class="o">=</span> <span class="n">threadIdx</span><span class="o">.</span><span class="n">x</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">tx</span> <span class="o">&gt;=</span> <span class="n">n_state</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-    <span class="n">FLOAT</span> <span class="n">u</span><span class="p">;</span>
-    <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="n">T</span><span class="p">;</span> <span class="n">t</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nb">int</span> <span class="n">j</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">bx</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_state</span><span class="p">;</span>
-        <span class="n">u</span> <span class="o">=</span> <span class="n">MUL</span><span class="p">(</span><span class="n">Ms</span><span class="p">[(</span><span class="n">j</span> <span class="o">+</span> <span class="n">tx</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_state</span><span class="p">],</span> <span class="n">alpha</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
-        <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n_state</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="n">u</span> <span class="o">=</span> <span class="n">SUM</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">MUL</span><span class="p">(</span><span class="n">Ms</span><span class="p">[(</span><span class="n">j</span> <span class="o">+</span> <span class="n">tx</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_state</span> <span class="o">+</span> <span class="n">i</span><span class="p">],</span> <span class="n">alpha</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="n">i</span><span class="p">]));</span>
-        <span class="p">}</span>
-        <span class="n">alpha</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="n">n_state</span><span class="p">)</span> <span class="o">+</span> <span class="n">tx</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="p">;</span>
-        <span class="n">__syncthreads</span><span class="p">();</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
+    int bx = blockIdx.x, tx = threadIdx.x;
+    if (tx &gt;= n_state) return;
+    FLOAT u;
+    for (int t = 0; t &lt; T; t++) {
+        int j = (t * N + bx) * n_state;
+        u = MUL(Ms[(j + tx) * n_state], alpha[j]);
+        for (int i = 1; i &lt; n_state; i++) {
+            u = SUM(u, MUL(Ms[(j + tx) * n_state + i], alpha[j + i]));
+        }
+        alpha[j + (N * n_state) + tx] = u;
+        __syncthreads();
+    }
+  }
 </pre></div>
 
     </div>
@@ -235,7 +236,7 @@ nb_path: "notebooks/04_Normalisation.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="fused_batch_Mv" class="doc_header"><code>fused_batch_Mv</code><a href="__main__.py#L12" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>fused_batch_Mv</code>(<strong><code>Ms</code></strong>, <strong><code>alpha_0</code></strong>, <strong><code>S</code></strong>:<a href="/mctc/CTC_loss.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f8387f42620&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f8387f42620&gt;, dsum=&lt;built-in method softmax of type object at 0x7f8387f42620&gt;)</code></em>)</p>
+<h4 id="fused_batch_Mv" class="doc_header"><code>fused_batch_Mv</code><a href="__main__.py#L12" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>fused_batch_Mv</code>(<strong><code>Ms</code></strong>, <strong><code>alpha_0</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/CTC_loss.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f31349d7a80&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f31349d7a80&gt;, dsum=&lt;built-in method softmax of type object at 0x7f31349d7a80&gt;)</code></em>)</p>
 </blockquote>
 
 </div>
@@ -367,7 +368,7 @@ extending torch.autograd.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="logz" class="doc_header"><code>logz</code><a href="__main__.py#L45" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logz</code>(<strong><code>Ms</code></strong>, <strong><code>alpha_0</code></strong>, <strong><code>beta_T</code></strong>, <strong><code>S</code></strong>:<a href="/mctc/CTC_loss.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f8387f42620&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f8387f42620&gt;, dsum=&lt;built-in method softmax of type object at 0x7f8387f42620&gt;)</code></em>)</p>
+<h4 id="logz" class="doc_header"><code>logz</code><a href="__main__.py#L45" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logz</code>(<strong><code>Ms</code></strong>, <strong><code>alpha_0</code></strong>, <strong><code>beta_T</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/CTC_loss.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f31349d7a80&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f31349d7a80&gt;, dsum=&lt;built-in method softmax of type object at 0x7f31349d7a80&gt;)</code></em>)</p>
 </blockquote>
 
 </div>

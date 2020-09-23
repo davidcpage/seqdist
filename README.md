@@ -1,10 +1,10 @@
-# MCTC
-> Matrix-valued and banded extensions of the CTC loss in pytorch and cupy.
+# Seqdist
+> Probability distributions over sequences in pytorch and cupy.
 
 
 ## Install
 
-`pip install your_project_name`
+`pip install seqdist`
 
 ## How to use
 
@@ -13,11 +13,11 @@ Comparison against builtin pytorch implementation of the standard CTC loss:
 ```
 sample_inputs = logits, targets, input_lengths, target_lengths = ctc.generate_sample_inputs(T_min=450, T_max=500, N=128, C=20, L_min=80, L_max=100)
 print('pytorch loss: {:.4f}'.format(ctc.loss_pytorch(*sample_inputs)))
-print('mctc loss:    {:.4f}'.format(ctc.loss_cupy(*sample_inputs)))
+print('seqdist loss: {:.4f}'.format(ctc.loss_cupy(*sample_inputs)))
 ```
 
-    pytorch loss: 12.7408
-    mctc loss:    12.7408
+    pytorch loss: 12.8080
+    seqdist loss: 12.8080
 
 
 ### Speed comparison
@@ -28,9 +28,9 @@ Pytorch:
 report(benchmark_fwd_bwd(ctc.loss_pytorch, *sample_inputs))
 ```
 
-    fwd: 4.86ms (3.85-5.44ms)
-    bwd: 9.61ms (8.40-11.04ms)
-    tot: 14.47ms (12.25-15.72ms)
+    fwd: 4.79ms (4.17-5.33ms)
+    bwd: 9.69ms (8.33-10.88ms)
+    tot: 14.47ms (12.67-16.20ms)
 
 
 MCTC:
@@ -39,9 +39,9 @@ MCTC:
 report(benchmark_fwd_bwd(ctc.loss_cupy, *sample_inputs))
 ```
 
-    fwd: 6.66ms (6.45-7.09ms)
-    bwd: 5.22ms (4.94-5.50ms)
-    tot: 11.88ms (11.43-12.59ms)
+    fwd: 7.22ms (6.78-7.85ms)
+    bwd: 6.21ms (5.82-8.57ms)
+    tot: 13.43ms (12.63-16.41ms)
 
 
 ### Alignments

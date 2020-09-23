@@ -28,6 +28,6 @@ entries:
       title: Sparse
       url: Sparse.html
     output: web
-    title: mctc
+    title: seqdist
   output: web
   title: Sidebar

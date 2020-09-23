@@ -1,5 +1,5 @@
 {
-  "mctc": {
+  "seqdist": {
     "Overview": "/",
     "Utils": "utils.html",
     "CTC loss": "CTC_loss.html",

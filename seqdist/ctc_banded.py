@@ -10,7 +10,7 @@ import numpy as np
 import cupy as cp
 
 from .utils import *
-from mctc import ctc
+from seqdist import ctc
 
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 

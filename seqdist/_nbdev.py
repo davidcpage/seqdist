@@ -60,8 +60,8 @@ modules = ["utils.py",
            "normalisation.py",
            "sparse.py"]
 
-doc_url = "https://davidcpage.github.io/mctc/"
+doc_url = "https://davidcpage.github.io/seqdist/"
 
-git_url = "https://github.com/davidcpage/mctc/tree/master/"
+git_url = "https://github.com/davidcpage/seqdist/tree/master/"
 
 def custom_doc_links(name): return None
