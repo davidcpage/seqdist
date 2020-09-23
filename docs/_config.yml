@@ -1,9 +1,9 @@
-repository: davidcpage/mctc
+repository: davidcpage/seqdist
 output: web
-topnav_title: mctc
-site_title: mctc
+topnav_title: seqdist
+site_title: seqdist
 company_name: David C. Page
-description: Matrix valued CTC loss
+description: Probability distributions over sequences in pytorch and cupy
 # Set to false to disable KaTeX math
 use_math: true
 # Add Google analytics id if you have one and want to use it here

@@ -1,10 +1,10 @@
 SRC = $(wildcard notebooks/*.ipynb)
 
-all: mctc docs
+all: seqdist docs
 
-mctc: $(SRC)
+seqdist: $(SRC)
 	nbdev_build_lib
-	touch mctc
+	touch seqdist
 
 docs_serve: docs
 	cd docs && bundle exec jekyll serve
