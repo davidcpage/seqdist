@@ -33,7 +33,7 @@ report(benchmark_fwd_bwd(ctc.loss_pytorch, *sample_inputs))
     tot: 14.47ms (12.67-16.20ms)
 
 
-MCTC:
+Seqdist:
 
 ```
 report(benchmark_fwd_bwd(ctc.loss_cupy, *sample_inputs))
