@@ -1,6 +1,7 @@
 {
   "seqdist": {
     "Overview": "/",
+    "Core": "core.html",
     "Utils": "utils.html",
     "CTC loss": "CTC_loss.html",
     "CTC loss banded": "CTC_loss_banded.html",
