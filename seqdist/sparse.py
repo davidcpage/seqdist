@@ -109,7 +109,7 @@ def cupy_func(func_name, dtype, S, NZ, K):
         Log: {'sum': 'logsumexp', 'mul': 'add'},
         Max: {'sum': 'max_', 'mul': 'add'},
     }
-    fname = 'fwd_bwd.cu'
+    fname = 'cuda/sparse_logZ.cu'
     return load_cupy_func(fname, func_name, FLOAT=float_types[dtype],  MUL=ops[S]['mul'], ZERO='{:E}'.format(S.zero), SUM=ops[S]['sum'], NZ=NZ, K=K)
 
 def logZ_fwd_cupy(Ms, idx, v0, vT, S:semiring=Log, K=4):
