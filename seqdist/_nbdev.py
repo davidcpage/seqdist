@@ -51,6 +51,8 @@ index = {"max_grad": "00_core.ipynb",
          "logZ_scan": "06_Sparse.ipynb",
          "ctc_loss_scan": "06_Sparse.ipynb",
          "cupy_func": "06_Sparse.ipynb",
+         "logZ_fwd_cupy": "06_Sparse.ipynb",
+         "logZ_bwd_cupy": "06_Sparse.ipynb",
          "logZ": "06_Sparse.ipynb",
          "ctc_loss": "06_Sparse.ipynb"}
 

@@ -67,7 +67,7 @@ nb_path: "notebooks/06_Sparse.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Mv_scan_py" class="doc_header"><code>Mv_scan_py</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L19" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Mv_scan_py</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f3eb83e4a80&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f3eb83e4a80&gt;, dsum=&lt;built-in method softmax of type object at 0x7f3eb83e4a80&gt;)</code></em>)</p>
+<h4 id="Mv_scan_py" class="doc_header"><code>Mv_scan_py</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L19" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Mv_scan_py</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f423b36ea80&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f423b36ea80&gt;, dsum=&lt;built-in method softmax of type object at 0x7f423b36ea80&gt;)</code></em>)</p>
 </blockquote>
 
 </div>
@@ -405,14 +405,13 @@ __device__ __forceinline__ FLOAT logsumexp(FLOAT *s) {
     return log(res) + mx;
 }
     
-extern &quot;C&quot; __global__ void logZ_fwd_bwd(
+extern &quot;C&quot; __global__ void logZ_fwd(
     FLOAT* __restrict__ logZ,
     FLOAT* __restrict__ Ms_grad,
     const FLOAT* __restrict__ Ms,
     const FLOAT* __restrict__ v0,
     const FLOAT* __restrict__ vT,
     const int* __restrict__ idx,
-    const int* __restrict__ idx_T,
     int T, int N, int C
 ) {
     int bx = blockIdx.x;
@@ -445,24 +444,43 @@ extern &quot;C&quot; __global__ void logZ_fwd_bwd(
 
     for (int k = 0; k &lt; K; k++) {
         logZ[bx * C + tx + k] = MUL(a[k], vT[bx * C + tx + k]);
+    }
+}
+
+extern &quot;C&quot; __global__ void logZ_bwd(
+    FLOAT* __restrict__ betas,
+    const FLOAT* __restrict__ Ms,
+    const FLOAT* __restrict__ vT,
+    const int* __restrict__ idx_T,
+    int T, int N, int C
+) {
+    int bx = blockIdx.x;
+    int tx = threadIdx.x * K;
+    if (tx &gt;= C) return;
+    extern __shared__ FLOAT smem[];
+    
+    FLOAT a[K];
+    for (int k = 0; k &lt; K; k++) {
         a[k] = vT[bx * C + tx + k];
+        betas[(T * N + bx) * C + tx + k] = a[k];
     }
     __syncthreads();
-
+    
+    FLOAT s[NZ];
     for (int t = T - 1; t &gt;= 0; t--) {
         FLOAT *buf = smem + (t % 2) * blockDim.x * K;
         for (int k = 0; k &lt; K; k++) {
             buf[tx+k] = a[k];
         }
         __syncthreads(); 
-        int i = (t * N + bx) * C * NZ;
+        int i = (t * N + bx) * C;
         for (int k = 0; k &lt; K; k++) {
             for (int j = 0; j &lt; NZ; j++) {
                 int ix = idx_T[(tx + k) * NZ + j];
-                Ms_grad[i + (tx + k) * NZ + j] = MUL(Ms_grad[i + (tx + k) * NZ + j], a[k]);
-                s[j] = MUL(buf[ix / NZ], Ms[i + ix]);
+                s[j] = MUL(buf[ix / NZ], Ms[i * NZ + ix]);
             }            
             a[k] = SUM(s);
+            betas[i + tx + k] = a[k];
         }        
     }
 }
@@ -493,7 +511,7 @@ extern &quot;C&quot; __global__ void logZ_fwd_bwd(
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="cupy_func" class="doc_header"><code>cupy_func</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L105" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>cupy_func</code>(<strong><code>dtype</code></strong>, <strong><code>S</code></strong>, <strong><code>NZ</code></strong>, <strong><code>K</code></strong>)</p>
+<h4 id="cupy_func" class="doc_header"><code>cupy_func</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L105" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>cupy_func</code>(<strong><code>func_name</code></strong>, <strong><code>dtype</code></strong>, <strong><code>S</code></strong>, <strong><code>NZ</code></strong>, <strong><code>K</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -517,7 +535,55 @@ extern &quot;C&quot; __global__ void logZ_fwd_bwd(
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="logZ" class="doc_header"><code>logZ</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L144" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>vT</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f3eb83e4a80&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f3eb83e4a80&gt;, dsum=&lt;built-in method softmax of type object at 0x7f3eb83e4a80&gt;)</code></em>, <strong><code>K</code></strong>=<em><code>1</code></em>)</p>
+<h4 id="logZ_fwd_cupy" class="doc_header"><code>logZ_fwd_cupy</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L115" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_fwd_cupy</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>vT</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f423b36ea80&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f423b36ea80&gt;, dsum=&lt;built-in method softmax of type object at 0x7f423b36ea80&gt;)</code></em>, <strong><code>K</code></strong>=<em><code>4</code></em>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="logZ_bwd_cupy" class="doc_header"><code>logZ_bwd_cupy</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L128" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_bwd_cupy</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>vT</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f423b36ea80&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f423b36ea80&gt;, dsum=&lt;built-in method softmax of type object at 0x7f423b36ea80&gt;)</code></em>, <strong><code>K</code></strong>=<em><code>4</code></em>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="logZ" class="doc_header"><code>logZ</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L158" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>vT</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f423b36ea80&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f423b36ea80&gt;, dsum=&lt;built-in method softmax of type object at 0x7f423b36ea80&gt;)</code></em>, <strong><code>K</code></strong>=<em><code>1</code></em>)</p>
 </blockquote>
 
 </div>

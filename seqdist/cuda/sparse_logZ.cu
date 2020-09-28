@@ -15,14 +15,13 @@ __device__ __forceinline__ FLOAT logsumexp(FLOAT *s) {
     return log(res) + mx;
 }
     
-extern "C" __global__ void logZ_fwd_bwd(
+extern "C" __global__ void logZ_fwd(
     FLOAT* __restrict__ logZ,
     FLOAT* __restrict__ Ms_grad,
     const FLOAT* __restrict__ Ms,
     const FLOAT* __restrict__ v0,
     const FLOAT* __restrict__ vT,
     const int* __restrict__ idx,
-    const int* __restrict__ idx_T,
     int T, int N, int C
 ) {
     int bx = blockIdx.x;
@@ -55,24 +54,43 @@ extern "C" __global__ void logZ_fwd_bwd(
 
     for (int k = 0; k < K; k++) {
         logZ[bx * C + tx + k] = MUL(a[k], vT[bx * C + tx + k]);
+    }
+}
+
+extern "C" __global__ void logZ_bwd(
+    FLOAT* __restrict__ betas,
+    const FLOAT* __restrict__ Ms,
+    const FLOAT* __restrict__ vT,
+    const int* __restrict__ idx_T,
+    int T, int N, int C
+) {
+    int bx = blockIdx.x;
+    int tx = threadIdx.x * K;
+    if (tx >= C) return;
+    extern __shared__ FLOAT smem[];
+    
+    FLOAT a[K];
+    for (int k = 0; k < K; k++) {
         a[k] = vT[bx * C + tx + k];
+        betas[(T * N + bx) * C + tx + k] = a[k];
     }
     __syncthreads();
-
+    
+    FLOAT s[NZ];
     for (int t = T - 1; t >= 0; t--) {
         FLOAT *buf = smem + (t % 2) * blockDim.x * K;
         for (int k = 0; k < K; k++) {
             buf[tx+k] = a[k];
         }
         __syncthreads(); 
-        int i = (t * N + bx) * C * NZ;
+        int i = (t * N + bx) * C;
         for (int k = 0; k < K; k++) {
             for (int j = 0; j < NZ; j++) {
                 int ix = idx_T[(tx + k) * NZ + j];
-                Ms_grad[i + (tx + k) * NZ + j] = MUL(Ms_grad[i + (tx + k) * NZ + j], a[k]);
-                s[j] = MUL(buf[ix / NZ], Ms[i + ix]);
+                s[j] = MUL(buf[ix / NZ], Ms[i * NZ + ix]);
             }            
             a[k] = SUM(s);
+            betas[i + tx + k] = a[k];
         }        
     }
 }
