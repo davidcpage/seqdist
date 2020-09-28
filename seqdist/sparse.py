@@ -116,7 +116,7 @@ def logZ_fwd_cupy(Ms, idx, v0, vT, S:semiring=Log, K=4):
     assert Ms.device.index is not None
     T, N, C, NZ = Ms.shape
     assert idx.shape == (C, NZ)
-    idx = idx.to(torch.int)
+    idx = idx.to(dtype=torch.int, device=Ms.device)
     Ms_grad = Ms.new_full((T, N, C, NZ), S.zero)
     logZ = Ms.new_full((N, C), S.zero)
     _bytes = 8 if (Ms.dtype == torch.float64) else 4
@@ -128,7 +128,7 @@ def logZ_fwd_cupy(Ms, idx, v0, vT, S:semiring=Log, K=4):
 def logZ_bwd_cupy(Ms, idx, vT, S:semiring=Log, K=4):
     T, N, C, NZ = Ms.shape
     betas = Ms.new_full((T+1, N, C), S.zero)
-    idx_T = idx.flatten().argsort().to(torch.int) #transpose
+    idx_T = idx.flatten().argsort().to(dtype=torch.int, device=Ms.device) #transpose
     _bytes = 8 if (Ms.dtype == torch.float64) else 4
     with cp.cuda.Device(Ms.device.index):
         cupy_func('logZ_bwd', Ms.dtype, S, NZ, K)(grid=(N, 1, 1), block=(C//K, 1, 1), shared_mem=2*_bytes*C,
