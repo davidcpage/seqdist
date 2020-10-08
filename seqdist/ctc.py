@@ -147,7 +147,7 @@ class _LogzViterbi(torch.autograd.Function):
     @staticmethod
     def backward(ctx, grad):
         alpha, beta, input_lengths = ctx.saved_tensors
-        g = max_grad(alpha[1:] + beta[1:], dim=2) * masked_grad(grad.expand(alpha.size(0)-1, -1), input_lengths)
+        g = Max.dsum(alpha[1:] + beta[1:], dim=2) * masked_grad(grad.expand(alpha.size(0)-1, -1), input_lengths)
         return g, None, None, None, None
 
 # Cell
