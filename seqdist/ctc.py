@@ -99,19 +99,20 @@ def masked_grad(grad, input_lengths):
 
 class _Logz(torch.autograd.Function):
     @staticmethod
-    def forward(ctx, state_scores, repeat_mask, final_states, input_lengths, fwd_bwd_impl):
-        alpha, beta, logz = fwd_bwd(state_scores, repeat_mask, final_states, input_lengths, fwd_bwd_impl, Log)
+    def forward(ctx, state_scores, repeat_mask, final_states, input_lengths, fwd_bwd_impl, S:semiring):
+        alpha, beta, logz = fwd_bwd(state_scores, repeat_mask, final_states, input_lengths, fwd_bwd_impl, S)
         ctx.save_for_backward(alpha, beta, input_lengths)
+        ctx.semiring=S
         return logz
 
     @staticmethod
     def backward(ctx, grad):
         alpha, beta, input_lengths = ctx.saved_tensors
-        g = torch.softmax(alpha[1:] + beta[1:], dim=2) * masked_grad(grad.expand(alpha.size(0)-1, -1), input_lengths)
-        return g, None, None, None, None
+        g = ctx.semiring.dsum(alpha[1:] + beta[1:], dim=2) * masked_grad(grad.expand(alpha.size(0)-1, -1), input_lengths)
+        return g, None, None, None, None, None
 
 def loss_py(logits, targets, input_lengths, target_lengths):
-    logz = _Logz.apply(*prepare_inputs(logits.log_softmax(2), targets, input_lengths, target_lengths), _fwd_bwd_py)
+    logz = _Logz.apply(*prepare_inputs(logits.log_softmax(2), targets, input_lengths, target_lengths), _fwd_bwd_py, Log)
     return - (logz / target_lengths).mean()
 
 # Cell
@@ -130,35 +131,21 @@ def _fwd_bwd_cupy(alpha, beta, state_scores, repeat_mask, input_lengths, S:semir
     return alpha_T
 
 def loss_cupy(logits, targets, input_lengths, target_lengths):
-    logz = _Logz.apply(*prepare_inputs(logits.log_softmax(2), targets, input_lengths, target_lengths), _fwd_bwd_cupy)
+    logz = _Logz.apply(*prepare_inputs(logits.log_softmax(2), targets, input_lengths, target_lengths), _fwd_bwd_cupy, Log)
     return - (logz / target_lengths).mean()
 
 # Cell
-cupy_funcs[(torch.float32, Max)] = load_cupy_func('cuda/ctc.cu', 'fwd_bwd_logspace', FLOAT='float',  SUM='max3', MUL='add', ZERO='{:E}'.format(Log.zero))
-cupy_funcs[(torch.float64, Max)] = load_cupy_func('cuda/ctc.cu', 'fwd_bwd_logspace', FLOAT='double', SUM='max3', MUL='add', ZERO='{:E}'.format(Log.zero))
+cupy_funcs[(torch.float32, Max)] = load_cupy_func('cuda/ctc.cu', 'fwd_bwd_logspace', FLOAT='float',  SUM='max3', MUL='add', ZERO='{:E}'.format(Max.zero))
+cupy_funcs[(torch.float64, Max)] = load_cupy_func('cuda/ctc.cu', 'fwd_bwd_logspace', FLOAT='double', SUM='max3', MUL='add', ZERO='{:E}'.format(Max.zero))
 
-class _LogzViterbi(torch.autograd.Function):
-    @staticmethod
-    def forward(ctx, state_scores, repeat_mask, final_states, input_lengths, fwd_bwd_impl):
-        alpha, beta, logz = fwd_bwd(state_scores, repeat_mask, final_states, input_lengths, fwd_bwd_impl, Max)
-        ctx.save_for_backward(alpha, beta, input_lengths)
-        return logz
-
-    @staticmethod
-    def backward(ctx, grad):
-        alpha, beta, input_lengths = ctx.saved_tensors
-        g = Max.dsum(alpha[1:] + beta[1:], dim=2) * masked_grad(grad.expand(alpha.size(0)-1, -1), input_lengths)
-        return g, None, None, None, None
-
-# Cell
 def viterbi_alignments(logits, targets, input_lengths, target_lengths):
     state_scores, repeat_mask, final_states, input_lengths = prepare_inputs(logits.log_softmax(2), targets, input_lengths, target_lengths)
-    _LogzViterbi.apply(state_scores.detach_().requires_grad_(), repeat_mask, final_states, input_lengths, _fwd_bwd_cupy).sum().backward()
+    _Logz.apply(state_scores.detach_().requires_grad_(), repeat_mask, final_states, input_lengths, _fwd_bwd_cupy, Max).sum().backward()
     return state_scores.grad
 
 def soft_alignments(logits, targets, input_lengths, target_lengths, beta=1.0):
     state_scores, repeat_mask, final_states, input_lengths = prepare_inputs((logits*beta).log_softmax(2), targets, input_lengths, target_lengths)
-    _Logz.apply(state_scores.detach_().requires_grad_(), repeat_mask, final_states, input_lengths, _fwd_bwd_cupy).sum().backward()
+    _Logz.apply(state_scores.detach_().requires_grad_(), repeat_mask, final_states, input_lengths, _fwd_bwd_cupy, Log).sum().backward()
     return state_scores.grad
 
 # Cell

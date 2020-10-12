@@ -53,13 +53,6 @@ nb_path: "notebooks/06_Sparse.ipynb"
     
 <div class="cell border-box-sizing code_cell rendered">
 
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
 <div class="output_wrapper">
 <div class="output">
 
@@ -67,7 +60,7 @@ nb_path: "notebooks/06_Sparse.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Mv_scan_py" class="doc_header"><code>Mv_scan_py</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L19" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Mv_scan_py</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f93aa9eca80&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f93aa9eca80&gt;, dsum=&lt;built-in method softmax of type object at 0x7f93aa9eca80&gt;)</code></em>)</p>
+<h4 id="Mv_scan_py" class="doc_header"><code>Mv_scan_py</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L19" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Mv_scan_py</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f3b7bc43a80&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f3b7bc43a80&gt;, dsum=&lt;built-in method softmax of type object at 0x7f3b7bc43a80&gt;)</code></em>)</p>
 </blockquote>
 
 </div>
@@ -100,6 +93,13 @@ nb_path: "notebooks/06_Sparse.ipynb"
 
 </div>
 </div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
 </div>
     {% endraw %}
@@ -224,13 +224,6 @@ extern &quot;C&quot; __global__ void sparse_Mv_scan(
     
 <div class="cell border-box-sizing code_cell rendered">
 
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
 <div class="output_wrapper">
 <div class="output">
 
@@ -271,6 +264,13 @@ extern &quot;C&quot; __global__ void sparse_Mv_scan(
 
 </div>
 </div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
 </div>
     {% endraw %}
@@ -497,13 +497,6 @@ extern &quot;C&quot; __global__ void logZ_bwd(
     
 <div class="cell border-box-sizing code_cell rendered">
 
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
 <div class="output_wrapper">
 <div class="output">
 
@@ -535,7 +528,7 @@ extern &quot;C&quot; __global__ void logZ_bwd(
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="logZ_fwd_cupy" class="doc_header"><code>logZ_fwd_cupy</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L115" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_fwd_cupy</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>vT</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f93aa9eca80&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f93aa9eca80&gt;, dsum=&lt;built-in method softmax of type object at 0x7f93aa9eca80&gt;)</code></em>, <strong><code>K</code></strong>=<em><code>4</code></em>)</p>
+<h4 id="logZ_fwd_cupy" class="doc_header"><code>logZ_fwd_cupy</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L115" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_fwd_cupy</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>vT</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f3b7bc43a80&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f3b7bc43a80&gt;, dsum=&lt;built-in method softmax of type object at 0x7f3b7bc43a80&gt;)</code></em>, <strong><code>K</code></strong>=<em><code>4</code></em>)</p>
 </blockquote>
 
 </div>
@@ -559,7 +552,7 @@ extern &quot;C&quot; __global__ void logZ_bwd(
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="logZ_bwd_cupy" class="doc_header"><code>logZ_bwd_cupy</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L128" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_bwd_cupy</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>vT</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f93aa9eca80&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f93aa9eca80&gt;, dsum=&lt;built-in method softmax of type object at 0x7f93aa9eca80&gt;)</code></em>, <strong><code>K</code></strong>=<em><code>4</code></em>)</p>
+<h4 id="logZ_bwd_cupy" class="doc_header"><code>logZ_bwd_cupy</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L128" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_bwd_cupy</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>vT</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f3b7bc43a80&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f3b7bc43a80&gt;, dsum=&lt;built-in method softmax of type object at 0x7f3b7bc43a80&gt;)</code></em>, <strong><code>K</code></strong>=<em><code>4</code></em>)</p>
 </blockquote>
 
 </div>
@@ -583,7 +576,7 @@ extern &quot;C&quot; __global__ void logZ_bwd(
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="logZ" class="doc_header"><code>logZ</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L158" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>vT</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f93aa9eca80&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f93aa9eca80&gt;, dsum=&lt;built-in method softmax of type object at 0x7f93aa9eca80&gt;)</code></em>, <strong><code>K</code></strong>=<em><code>1</code></em>)</p>
+<h4 id="logZ" class="doc_header"><code>logZ</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L158" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>vT</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f3b7bc43a80&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f3b7bc43a80&gt;, dsum=&lt;built-in method softmax of type object at 0x7f3b7bc43a80&gt;)</code></em>, <strong><code>K</code></strong>=<em><code>1</code></em>)</p>
 </blockquote>
 
 </div>
@@ -592,6 +585,13 @@ extern &quot;C&quot; __global__ void logZ_bwd(
 
 </div>
 </div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
 </div>
     {% endraw %}
