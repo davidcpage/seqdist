@@ -53,6 +53,14 @@ def report(times):
         print('{!s}: {:.2f}ms ({:.2f}-{:.2f}ms)'.format(k, v.mean(), v.min(), v.max()))
 
 # Cell
+def add_checks(raw_kernel):
+    def wrapped(grid, block, args, *, shared_mem=0):
+        MAX_THREADS = 1024
+        if np.prod(block) > MAX_THREADS:
+            raise Exception('Block of size {} not allowed. Maximum number of threads allowed per block is {}.'.format(block, MAX_THREADS))
+        return raw_kernel(grid, block, args, shared_mem=shared_mem)
+    return wrapped
+
 def load_cupy_func(fname, name, **kwargs):
     try: fname = str((Path(__file__).parent / fname).resolve())
     except: pass
@@ -60,7 +68,7 @@ def load_cupy_func(fname, name, **kwargs):
         code = f.read()
     macros = ['#define {!s} {!s}'.format(k, v) for k,v in kwargs.items()]
     code = '\n'.join(macros + [code])
-    return cp.RawKernel(code, name)
+    return add_checks(cp.RawKernel(code, name))
 
 def load_cupy_module(fname, **kwargs):
     try: fname = str((Path(__file__).parent / fname).resolve())

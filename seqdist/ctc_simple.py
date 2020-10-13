@@ -105,12 +105,40 @@ cupy_funcs = {
     (torch.float64, Max): load_cupy_func('cuda/ctc_simple.cu', 'fwd_bwd_logspace', FLOAT='double', SUM='max2', MUL='add', ZERO='{:E}'.format(Max.zero)),
 }
 
+cupy_funcs_loop = {
+    (torch.float32, Log): load_cupy_func('cuda/ctc_simple.cu', 'fwd_bwd_logspace_loop', FLOAT='float',  SUM='logsumexp2', MUL='add', ZERO='{:E}'.format(Log.zero)),
+    (torch.float64, Log): load_cupy_func('cuda/ctc_simple.cu', 'fwd_bwd_logspace_loop', FLOAT='double', SUM='logsumexp2', MUL='add', ZERO='{:E}'.format(Log.zero)),
+    (torch.float32, Max): load_cupy_func('cuda/ctc_simple.cu', 'fwd_bwd_logspace_loop', FLOAT='float',  SUM='max2', MUL='add', ZERO='{:E}'.format(Max.zero)),
+    (torch.float64, Max): load_cupy_func('cuda/ctc_simple.cu', 'fwd_bwd_logspace_loop', FLOAT='double', SUM='max2', MUL='add', ZERO='{:E}'.format(Max.zero)),
+}
+
 def _simple_lattice_fwd_bwd_cupy(alpha, beta_T, beta_stay, beta_move, stay_scores, move_scores, S:semiring):
     T, N, L = stay_scores.shape
+    if L > 1024: #exceeds max threads per block
+        return _simple_lattice_fwd_bwd_cupy_loop(alpha, beta_T, beta_stay, beta_move, stay_scores, move_scores, S)
+    _bytes = 8 if (stay_scores.dtype == torch.float64) else 4
     with cp.cuda.Device(stay_scores.device.index):
-        cupy_funcs[(stay_scores.dtype, S)](grid=(N, 2, 1), block=(L, 1, 1), shared_mem=2*8*L,
+        cupy_funcs[(stay_scores.dtype, S)](grid=(N, 2, 1), block=(L, 1, 1), shared_mem=2*_bytes*L,
                args=(alpha.data_ptr(), beta_T.data_ptr(), beta_stay.data_ptr(), beta_move.data_ptr(),
                      stay_scores.data_ptr(), move_scores.data_ptr(), T, N, L))
 
-def logZ_cupy(stay_scores, move_scores, target_lengths):
-    return LogZ.apply(stay_scores, move_scores, target_lengths, _simple_lattice_fwd_bwd_cupy, Log)
+def _simple_lattice_fwd_bwd_cupy_loop(alpha, beta_T, beta_stay, beta_move, stay_scores, move_scores, S:semiring, max_block_size=1024):
+    T, N, L = stay_scores.shape
+    block_size = min(L, max_block_size)
+    beta = alpha.new_full(alpha.shape, S.zero)
+    beta[-1] = beta_T
+    with cp.cuda.Device(stay_scores.device.index):
+        cupy_funcs_loop[(stay_scores.dtype, S)](grid=(N, 2, 1), block=(block_size, 1, 1),
+               args=(alpha.data_ptr(), beta.data_ptr(), beta_stay.data_ptr(), beta_move.data_ptr(),
+                     stay_scores.data_ptr(), move_scores.data_ptr(), T, N, L))
+        
+def logZ_cupy(stay_scores, move_scores, target_lengths, S:semiring=Log):
+    return LogZ.apply(stay_scores, move_scores, target_lengths, _simple_lattice_fwd_bwd_cupy, S)
+
+def viterbi_alignments(stay_scores, move_scores, target_lengths):
+    target_lengths = target_lengths.to(stay_scores.device)
+    stay_scores, move_scores = stay_scores.detach().requires_grad_(), move_scores.detach().requires_grad_()
+    logZ_cupy(stay_scores, move_scores, target_lengths, Max).sum().backward()
+    alignments = stay_scores.grad.clone()
+    alignments[:, :, :-1] += move_scores.grad
+    return alignments

@@ -45,3 +45,38 @@ extern "C" __global__ void fwd_bwd_logspace(
         }
     }
   }
+
+extern "C" __global__ void fwd_bwd_logspace_loop(
+    FLOAT* __restrict__ alpha, FLOAT* __restrict__ beta,
+    FLOAT* __restrict__ beta_stay, FLOAT* __restrict__ beta_move, 
+    const FLOAT* __restrict__ stay_scores, const FLOAT* __restrict__ move_scores,
+    int T, int N, int L
+) {
+    int bx = blockIdx.x, tx = threadIdx.x;
+    if (blockIdx.y == 0) {
+        FLOAT a;
+        for (int t = 0; t < T; t++) {
+            for (int j = tx; j < L; j += blockDim.x) {
+                a = (j > 0) ? MUL(move_scores[(t * N + bx) * (L - 1) + j - 1], alpha[(t * N + bx) * L + j - 1]) : ZERO;
+                alpha[((t + 1) * N + bx) * L + j] = SUM(MUL(stay_scores[(t * N + bx) * L + j], alpha[(t * N + bx) * L + j]), a);
+            }
+            __syncthreads();
+        }
+    }
+    else {
+        FLOAT b, b1;
+        for (int t = T; t > 0; t--) {
+            for (int j = L - blockDim.x + tx; j >= 0; j -= blockDim.x) {
+                b1 = ZERO;
+                if (j < L - 1) {
+                    b1 = MUL(beta[(t * N + bx) * L + j + 1], move_scores[(((t - 1) * N + bx) * (L - 1)) + j]);
+                    beta_move[((t - 1) * N + bx) * L + j] = b1;
+                }
+                b = MUL(beta[(t * N + bx) * L + j], stay_scores[(((t - 1) * N + bx) * L) + j]);
+                beta_stay[((t - 1) * N + bx) * L + j] = b;
+                beta[((t - 1) * N + bx) * L + j] = SUM(b, b1);
+            }
+            __syncthreads();
+        }
+    }
+  }
