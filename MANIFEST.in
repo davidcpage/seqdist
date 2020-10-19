@@ -2,4 +2,5 @@ include settings.ini
 include LICENSE
 include CONTRIBUTING.md
 include README.md
+graft seqdist/cuda
 recursive-exclude * __pycache__
