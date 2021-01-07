@@ -72,7 +72,7 @@ extern "C" __global__ void fwd_scores(
     FLOAT a[K];
     for (int k = 0; k < K; k++) {
         a[k] = v0[bx * C + tx + k];
-        alphas[tx + k] = a[k];
+        alphas[(bx * C) + tx + k] = a[k];
     }
     __syncthreads();
 
@@ -89,7 +89,7 @@ extern "C" __global__ void fwd_scores(
                 s[j] = MUL(buf[idx[(tx + k) * NZ + j]], Ms[(i + tx + k) * NZ + j]);
             }
             a[k] = SUM(s);
-            alphas[i + tx + k] = a[k];
+            alphas[(i + N * C) + tx + k] = a[k];
         }
     }
 }
