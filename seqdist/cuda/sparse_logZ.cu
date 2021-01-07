@@ -57,7 +57,44 @@ extern "C" __global__ void logZ_fwd(
     }
 }
 
-extern "C" __global__ void logZ_bwd(
+extern "C" __global__ void fwd_scores(
+    FLOAT* __restrict__ alphas,
+    const FLOAT* __restrict__ Ms,
+    const FLOAT* __restrict__ v0,
+    const int* __restrict__ idx,
+    int T, int N, int C
+) {
+    int bx = blockIdx.x;
+    int tx = threadIdx.x * K;
+    if (tx >= C) return;
+    extern __shared__ FLOAT smem[];
+
+    FLOAT a[K];
+    for (int k = 0; k < K; k++) {
+        a[k] = v0[bx * C + tx + k];
+        alphas[tx + k] = a[k];
+    }
+    __syncthreads();
+
+    FLOAT s[NZ];
+    for (int t = 0; t < T; t++) {
+        FLOAT *buf = smem + (t % 2) * blockDim.x * K;
+        for (int k = 0; k < K; k++) {
+            buf[tx+k] = a[k];
+        }
+        __syncthreads();
+        int i = (t * N + bx) * C;
+        for (int k = 0; k < K; k++) {
+            for (int j = 0; j < NZ; j++) {
+                s[j] = MUL(buf[idx[(tx + k) * NZ + j]], Ms[(i + tx + k) * NZ + j]);
+            }
+            a[k] = SUM(s);
+            alphas[i + tx + k] = a[k];
+        }
+    }
+}
+
+extern "C" __global__ void bwd_scores(
     FLOAT* __restrict__ betas,
     const FLOAT* __restrict__ Ms,
     const FLOAT* __restrict__ vT,
