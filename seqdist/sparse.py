@@ -133,7 +133,7 @@ def fwd_scores_cupy(Ms, idx, v0, S:semiring=Log, K=4):
     with cp.cuda.Device(Ms.device.index):
         cupy_func('fwd_scores', Ms.dtype, S, NZ, K)(grid=(N, 1, 1), block=(C//K, 1, 1), shared_mem=2*_bytes*C,
                args=(alphas.data_ptr(), Ms.data_ptr(), v0.data_ptr(), idx.data_ptr(), T, N, C))
-    return betas
+    return alphas
 
 def bwd_scores_cupy(Ms, idx, vT, S:semiring=Log, K=4):
     T, N, C, NZ = Ms.shape
