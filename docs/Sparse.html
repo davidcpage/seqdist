@@ -66,7 +66,7 @@ nb_path: "notebooks/06_Sparse.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Mv_scan_py" class="doc_header"><code>Mv_scan_py</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L19" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Mv_scan_py</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f910aba6320&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f910aba6320&gt;, dsum=&lt;built-in method softmax of type object at 0x7f910aba6320&gt;)</code></em>)</p>
+<h4 id="Mv_scan_py" class="doc_header"><code>Mv_scan_py</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L20" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Mv_scan_py</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f0fefab0320&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f0fefab0320&gt;, dsum=&lt;built-in method softmax of type object at 0x7f0fefab0320&gt;)</code></em>)</p>
 </blockquote>
 
 </div>
@@ -90,7 +90,7 @@ nb_path: "notebooks/06_Sparse.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="logZ_scan_py" class="doc_header"><code>logZ_scan_py</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L47" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_scan_py</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>vT</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>)</p>
+<h4 id="logZ_scan_py" class="doc_header"><code>logZ_scan_py</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L48" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_scan_py</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>vT</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>)</p>
 </blockquote>
 
 </div>
@@ -237,7 +237,7 @@ bwd diff: 1.64e-07
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Mv_scan_cupy" class="doc_header"><code>Mv_scan_cupy</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L89" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Mv_scan_cupy</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>)</p>
+<h4 id="Mv_scan_cupy" class="doc_header"><code>Mv_scan_cupy</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L90" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Mv_scan_cupy</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>)</p>
 </blockquote>
 
 </div>
@@ -261,7 +261,7 @@ bwd diff: 1.64e-07
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="logZ_scan" class="doc_header"><code>logZ_scan</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L99" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_scan</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>vT</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>)</p>
+<h4 id="logZ_scan" class="doc_header"><code>logZ_scan</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L100" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_scan</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>vT</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>)</p>
 </blockquote>
 
 </div>
@@ -461,7 +461,7 @@ tot: 10.87ms (10.73-10.94ms)
     <span class="n">FLOAT</span> <span class="n">a</span><span class="p">[</span><span class="n">K</span><span class="p">];</span>
     <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">K</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v0</span><span class="p">[</span><span class="n">bx</span> <span class="o">*</span> <span class="n">C</span> <span class="o">+</span> <span class="n">tx</span> <span class="o">+</span> <span class="n">k</span><span class="p">];</span>
-        <span class="n">alphas</span><span class="p">[</span><span class="n">tx</span> <span class="o">+</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">];</span>
+        <span class="n">alphas</span><span class="p">[(</span><span class="n">bx</span> <span class="o">*</span> <span class="n">C</span><span class="p">)</span> <span class="o">+</span> <span class="n">tx</span> <span class="o">+</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">];</span>
     <span class="p">}</span>
     <span class="n">__syncthreads</span><span class="p">();</span>
     
@@ -478,7 +478,7 @@ tot: 10.87ms (10.73-10.94ms)
                 <span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">MUL</span><span class="p">(</span><span class="n">buf</span><span class="p">[</span><span class="n">idx</span><span class="p">[(</span><span class="n">tx</span> <span class="o">+</span> <span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="n">NZ</span> <span class="o">+</span> <span class="n">j</span><span class="p">]],</span> <span class="n">Ms</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="n">tx</span> <span class="o">+</span> <span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="n">NZ</span> <span class="o">+</span> <span class="n">j</span><span class="p">]);</span>
             <span class="p">}</span>            
             <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">SUM</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
-            <span class="n">alphas</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">tx</span> <span class="o">+</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">];</span>
+            <span class="n">alphas</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="n">N</span> <span class="o">*</span> <span class="n">C</span><span class="p">)</span> <span class="o">+</span> <span class="n">tx</span> <span class="o">+</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">];</span>
         <span class="p">}</span>        
     <span class="p">}</span>
 <span class="p">}</span>
@@ -561,7 +561,7 @@ tot: 10.87ms (10.73-10.94ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="cupy_func" class="doc_header"><code>cupy_func</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L105" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>cupy_func</code>(<strong><code>func_name</code></strong>, <strong><code>dtype</code></strong>, <strong><code>S</code></strong>, <strong><code>NZ</code></strong>, <strong><code>K</code></strong>)</p>
+<h4 id="cupy_func" class="doc_header"><code>cupy_func</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L106" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>cupy_func</code>(<strong><code>func_name</code></strong>, <strong><code>dtype</code></strong>, <strong><code>S</code></strong>, <strong><code>NZ</code></strong>, <strong><code>K</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -585,7 +585,7 @@ tot: 10.87ms (10.73-10.94ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="logZ_fwd_cupy" class="doc_header"><code>logZ_fwd_cupy</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L115" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_fwd_cupy</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>vT</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f910aba6320&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f910aba6320&gt;, dsum=&lt;built-in method softmax of type object at 0x7f910aba6320&gt;)</code></em>, <strong><code>K</code></strong>=<em><code>4</code></em>)</p>
+<h4 id="logZ_fwd_cupy" class="doc_header"><code>logZ_fwd_cupy</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L116" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_fwd_cupy</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>vT</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f0fefab0320&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f0fefab0320&gt;, dsum=&lt;built-in method softmax of type object at 0x7f0fefab0320&gt;)</code></em>, <strong><code>K</code></strong>=<em><code>4</code></em>)</p>
 </blockquote>
 
 </div>
@@ -609,7 +609,7 @@ tot: 10.87ms (10.73-10.94ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="fwd_scores_cupy" class="doc_header"><code>fwd_scores_cupy</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L128" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>fwd_scores_cupy</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f910aba6320&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f910aba6320&gt;, dsum=&lt;built-in method softmax of type object at 0x7f910aba6320&gt;)</code></em>, <strong><code>K</code></strong>=<em><code>4</code></em>)</p>
+<h4 id="fwd_scores_cupy" class="doc_header"><code>fwd_scores_cupy</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L129" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>fwd_scores_cupy</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f0fefab0320&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f0fefab0320&gt;, dsum=&lt;built-in method softmax of type object at 0x7f0fefab0320&gt;)</code></em>, <strong><code>K</code></strong>=<em><code>4</code></em>)</p>
 </blockquote>
 
 </div>
@@ -633,7 +633,7 @@ tot: 10.87ms (10.73-10.94ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="bwd_scores_cupy" class="doc_header"><code>bwd_scores_cupy</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L138" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>bwd_scores_cupy</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>vT</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f910aba6320&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f910aba6320&gt;, dsum=&lt;built-in method softmax of type object at 0x7f910aba6320&gt;)</code></em>, <strong><code>K</code></strong>=<em><code>4</code></em>)</p>
+<h4 id="bwd_scores_cupy" class="doc_header"><code>bwd_scores_cupy</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L139" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>bwd_scores_cupy</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>vT</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f0fefab0320&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f0fefab0320&gt;, dsum=&lt;built-in method softmax of type object at 0x7f0fefab0320&gt;)</code></em>, <strong><code>K</code></strong>=<em><code>4</code></em>)</p>
 </blockquote>
 
 </div>
@@ -657,7 +657,7 @@ tot: 10.87ms (10.73-10.94ms)
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="logZ" class="doc_header"><code>logZ</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L168" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>vT</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f910aba6320&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f910aba6320&gt;, dsum=&lt;built-in method softmax of type object at 0x7f910aba6320&gt;)</code></em>, <strong><code>K</code></strong>=<em><code>1</code></em>)</p>
+<h4 id="logZ" class="doc_header"><code>logZ</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/sparse.py#L171" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ</code>(<strong><code>Ms</code></strong>, <strong><code>idx</code></strong>, <strong><code>v0</code></strong>, <strong><code>vT</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f0fefab0320&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f0fefab0320&gt;, dsum=&lt;built-in method softmax of type object at 0x7f0fefab0320&gt;)</code></em>, <strong><code>K</code></strong>=<em><code>1</code></em>)</p>
 </blockquote>
 
 </div>

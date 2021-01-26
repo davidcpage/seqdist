@@ -57,6 +57,7 @@ index = {"max_grad": "00_core.ipynb",
          "fwd_scores_cupy": "06_Sparse.ipynb",
          "bwd_scores_cupy": "06_Sparse.ipynb",
          "logZ": "06_Sparse.ipynb",
+         "logZ_bwd_cupy": "06_Sparse.ipynb",
          "ctc_loss": "06_Sparse.ipynb"}
 
 modules = ["core.py",
