@@ -144,7 +144,7 @@ nb_path: "notebooks/04_CTC_loss_simple.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="logZ_fwd" class="doc_header"><code>logZ_fwd</code><a href="__main__.py#L5" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_fwd</code>(<strong><code>stay_scores</code></strong>, <strong><code>move_scores</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>S</code></strong>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f89a76bb320&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f89a76bb320&gt;, dsum=&lt;built-in method softmax of type object at 0x7f89a76bb320&gt;)</code></em>)</p>
+<h4 id="logZ_fwd" class="doc_header"><code>logZ_fwd</code><a href="__main__.py#L5" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_fwd</code>(<strong><code>stay_scores</code></strong>, <strong><code>move_scores</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>S</code></strong>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7fe7a8ca5320&gt;, sum=&lt;built-in method logsumexp of type object at 0x7fe7a8ca5320&gt;, dsum=&lt;built-in method softmax of type object at 0x7fe7a8ca5320&gt;)</code></em>)</p>
 </blockquote>
 
 </div>
@@ -241,7 +241,7 @@ nb_path: "notebooks/04_CTC_loss_simple.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="dot" class="doc_header"><code>dot</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/ctc_simple.py#L64" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dot</code>(<strong><code>x</code></strong>, <strong><code>y</code></strong>, <strong><code>S</code></strong>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f89a76bb320&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f89a76bb320&gt;, dsum=&lt;built-in method softmax of type object at 0x7f89a76bb320&gt;)</code></em>, <strong><code>dim</code></strong>=<em><code>-1</code></em>)</p>
+<h4 id="dot" class="doc_header"><code>dot</code><a href="https://github.com/davidcpage/seqdist/tree/master/seqdist/ctc_simple.py#L64" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dot</code>(<strong><code>x</code></strong>, <strong><code>y</code></strong>, <strong><code>S</code></strong>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7fe7a8ca5320&gt;, sum=&lt;built-in method logsumexp of type object at 0x7fe7a8ca5320&gt;, dsum=&lt;built-in method softmax of type object at 0x7fe7a8ca5320&gt;)</code></em>, <strong><code>dim</code></strong>=<em><code>-1</code></em>)</p>
 </blockquote>
 
 </div>
@@ -500,7 +500,7 @@ bwd diff: 1.16e-10
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="logZ_cupy" class="doc_header"><code>logZ_cupy</code><a href="__main__.py#L39" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_cupy</code>(<strong><code>stay_scores</code></strong>, <strong><code>move_scores</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7f89a76bb320&gt;, sum=&lt;built-in method logsumexp of type object at 0x7f89a76bb320&gt;, dsum=&lt;built-in method softmax of type object at 0x7f89a76bb320&gt;)</code></em>)</p>
+<h4 id="logZ_cupy" class="doc_header"><code>logZ_cupy</code><a href="__main__.py#L39" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>logZ_cupy</code>(<strong><code>stay_scores</code></strong>, <strong><code>move_scores</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>S</code></strong>:<a href="/seqdist/core.html#semiring"><code>semiring</code></a>=<em><code>semiring(zero=-1e+38, one=0.0, mul=&lt;built-in method add of type object at 0x7fe7a8ca5320&gt;, sum=&lt;built-in method logsumexp of type object at 0x7fe7a8ca5320&gt;, dsum=&lt;built-in method softmax of type object at 0x7fe7a8ca5320&gt;)</code></em>)</p>
 </blockquote>
 
 </div>
@@ -525,6 +525,30 @@ bwd diff: 1.16e-10
 
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="viterbi_alignments" class="doc_header"><code>viterbi_alignments</code><a href="__main__.py#L42" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>viterbi_alignments</code>(<strong><code>stay_scores</code></strong>, <strong><code>move_scores</code></strong>, <strong><code>target_lengths</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="soft_alignments" class="doc_header"><code>soft_alignments</code><a href="__main__.py#L50" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>soft_alignments</code>(<strong><code>stay_scores</code></strong>, <strong><code>move_scores</code></strong>, <strong><code>target_lengths</code></strong>, <strong><code>beta</code></strong>=<em><code>1.0</code></em>)</p>
 </blockquote>
 
 </div>
